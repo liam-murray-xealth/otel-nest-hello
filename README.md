@@ -4,6 +4,12 @@ OTEL SDK installed for [sdk node](https://www.npmjs.com/package/@opentelemetry/s
 
 See env in `.env`
 
+Start server
+
+```bash
+npm run start:dev
+```
+
 Open API
 
 ```bash
@@ -18,5 +24,5 @@ curl http://localhost:9464/metrics
 
 Run local jaeger to see traces
 
-task explorer->run
-task explorer->browser
+- task explorer->run
+- task explorer->browser
