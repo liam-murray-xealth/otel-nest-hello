@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "presentation": {
+    "showReuseMessage": true,
+    "reveal": "always",
+    "panel": "shared"
+  },
+  "osx": {
+    "options": { "shell": { "executable": "bash", "args": ["-l", "-c"] } }
+  },
+  "type": "shell",
+  "group": "build",
+  "tasks": [
+    {
+      "label": "jaeger-browser",
+      "command": "open http://localhost:16686",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "group": "jaeger",
+        "revealProblems": "never",
+        "reveal": "never",
+        "panel": "shared",
+        "close": true
+      }
+    },
+    {
+      "label": "jaeger-run",
+      "command": "docker run --rm --name jaeger -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 -p 9411:9411 jaegertracing/all-in-one:1.6",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "group": "jaeger-ui",
+        "reveal": "never",
+        "focus": false,
+        "panel": "dedicated",
+        "close": false
+      }
+    },
+    {
+      "label": "app:serve",
+      "command": "npm run start:dev",
+      "presentation": {
+        "group": "run",
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "close": false
+      }
+    },
+    {
+      "label": "app:test",
+      "command": "npm run test",
+      "presentation": {
+        "group": "test",
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "close": false
+      }
+    }
+  ]
+}
