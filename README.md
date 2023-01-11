@@ -1,10 +1,12 @@
 # OTEL demo
 
-See: [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node)
+This project demonstrates a Nest.js service configured for traces and metrics using the [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node).
 
-Note the SDK install tells you to install `@opentelemetry/auto-instrumentations-node`. This brings in automatic instrumentation for popular node packages including Nest.js, Mongoose, etc.
+The SDK install guide (above link) tells you to install `@opentelemetry/auto-instrumentations-node`.
 
-See (and confirm) [environment configuration](./env). This configures collector address, etc.
+This brings in automatic instrumentation for popular node packages including Nest.js, Mongoose, etc. You don't need to install these packages separately.
+
+Check out (and confirm) the [deve environment runtime configuration](./.env). This configures the Jaeger collector address, etc. You will see similar in the docker-compose file and Kubernetes example manifests.
 
 # Quickstart
 
@@ -31,8 +33,7 @@ Run local jaeger to see traces (we could move these to npm scripts)
 - task explorer->run
 - task explorer->browser
 
-Build docker (for testing docker build)
+Next steps:
 
-```bash
-./build-docker.sh
-```
+- Build and test docker image: [docker build readme](./docker/README.md)
+- Deploy to kubernetes: [Kubernetes deploy readme](./kubernetes/otel-hello/README.md)
