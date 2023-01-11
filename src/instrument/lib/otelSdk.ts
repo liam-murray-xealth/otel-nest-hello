@@ -3,19 +3,17 @@ import {
   W3CTraceContextPropagator,
   W3CBaggagePropagator,
 } from '@opentelemetry/core'
+import { nodeInstrumentations, setIgnorePaths } from './instrumentations'
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base'
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger'
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { JaegerPropagator } from '@opentelemetry/propagator-jaeger'
 import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3'
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
 import * as process from 'process'
-import { MongoDBInstrumentation } from '@opentelemetry/instrumentation-mongodb'
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api'
 import { logger } from './logging'
-import { IncomingMessage } from 'http'
 
 // Most OTEL SDK can be configured via env vars:
 //  https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/
@@ -28,7 +26,7 @@ import { IncomingMessage } from 'http'
 //
 
 /**
- * Mapp
+ * Map OTEL_API_DEBUG_LEVEL=>DiagLogLevel
  */
 function mapDiagLevel(level: string): DiagLogLevel {
   if (level === undefined) {
@@ -48,54 +46,19 @@ function mapDiagLevel(level: string): DiagLogLevel {
   return ret
 }
 
-function createSdk(ignorePaths: string[]) {
-  //
-  // HTTP instrumentation and Nest/Express instrumentation run side-by-side
-  // Ideally we want to ignore incoming on all non-routes
-  //
-  function shouldIgnore(route: string): boolean {
-    return !!ignorePaths.find(a => route.match(a))
-  }
+// TODO
+//  - http instrumentation adds noisy route level metrics (can we disable?)
+//  - figure out way to enable/disable traces based on route annotations
+//  - configure sampler so we let ingress determine which paths to sample
+//
 
+function createSdk(ignorePaths: string[]) {
   // For troubleshooting, set the log level to DiagLogLevel.DEBUG
   const otelLogLevel = mapDiagLevel(process.env.OTELSDK_LOG_LEVEL)
   logger.info({ otelLogLevel }, 'OtelSDK creating...')
   diag.setLogger(new DiagConsoleLogger(), otelLogLevel)
 
-  // Auto instruments common Node libs
-  //   http
-  //   pino
-  //   mongoose,
-  //   fs,
-  //   etc.
-  //
-  // TODO
-  //  - http instrumentation adds noisy route level metrics (can we disable?)
-  //  - figure out way to enable/disable traces based on route annotations
-  //  - configure sampler so we let ingress determine which paths to sample
-  //
-  const nodeInstrumentations = getNodeAutoInstrumentations({
-    //'@opentelemetry/instrumentation-express': {},
-    '@opentelemetry/instrumentation-fs': {
-      // Noisy (produces spans outside of routes)
-      enabled: false,
-    },
-    '@opentelemetry/instrumentation-http': {
-      ignoreIncomingRequestHook: (req: IncomingMessage) => {
-        // For incoming this is too low-level
-        // We want to include only express routes
-        const { method, url } = req
-        logger.debug({ method, url }, 'RequestHook')
-        if (req.method === 'OPTIONS') {
-          return true
-        }
-        if (shouldIgnore(req.url)) {
-          return true
-        }
-        return false
-      },
-    },
-  })
+  setIgnorePaths(ignorePaths)
 
   // Access the meter to create instruments for recording observations:
   //
@@ -122,13 +85,7 @@ function createSdk(ignorePaths: string[]) {
         }),
       ],
     }),
-    instrumentations: [
-      nodeInstrumentations,
-      // What does this provide beyond mongoose?
-      new MongoDBInstrumentation({
-        enhancedDatabaseReporting: true,
-      }),
-    ],
+    instrumentations: [nodeInstrumentations],
   })
   return sdk
 }

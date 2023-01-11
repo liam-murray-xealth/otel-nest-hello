@@ -1,8 +1,9 @@
+// Order is important. Import instrument lib before everything else.
+import { startOtel, installShutdownOtelHooks, logger } from './instrument'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { INestApplication } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { startOtel, installShutdownOtelHooks, logger } from './instrument'
 import { Logger } from '@nestjs/common'
 
 //
