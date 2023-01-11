@@ -1,0 +1,20 @@
+---
+version: '3.4'
+services:
+  otel-hello:
+    image: ghcr.io/liam-murray-xealth/otel-hello:${IMAGE_TAG}
+    environment:
+      LOG_LEVEL: debug
+      PORT: 8080
+      OTELSDK_LOG_LEVEL: warn
+      # OTEL env
+      OTEL_SDK_DISABLED: false
+      OTEL_SERVICE_NAME: otel-nest-hello
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://host.docker.internal:14268/api/traces
+      OTEL_EXPORTER_JAEGER_PROTOCOL: 'http/thrift.binary'
+    ports:
+      - ${WEB_PORT}:8080
+      - ${METRICS_PORT}:9464
+    build:
+      context: ../
+      dockerfile: ${PWD}/dockerfile
