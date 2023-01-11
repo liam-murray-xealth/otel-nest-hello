@@ -6,7 +6,7 @@ The SDK install guide (above link) tells you to install `@opentelemetry/auto-ins
 
 This brings in automatic instrumentation for popular node packages including Nest.js, Mongoose, etc. You don't need to install these packages separately.
 
-Check out (and confirm) the [deve environment runtime configuration](./.env). This configures the Jaeger collector address, etc. You will see similar in the docker-compose file and Kubernetes example manifests.
+Check out (and confirm) the [dev environment runtime configuration](./.env). This configures the Jaeger collector address, etc. You will see similar in the docker-compose file and Kubernetes example manifests.
 
 # Quickstart
 
