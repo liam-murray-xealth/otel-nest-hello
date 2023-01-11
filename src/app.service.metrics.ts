@@ -1,4 +1,4 @@
-import { metrics, ValueType } from '@opentelemetry/api';
+import { metrics, ValueType } from '@opentelemetry/api'
 
 // Refs (most blogs out of date!)
 //  https://www.npmjs.com/package/@opentelemetry/sdk-metrics
@@ -16,7 +16,7 @@ import { metrics, ValueType } from '@opentelemetry/api';
  * OTEL SDK must be initialized prior to this
  */
 export function createMetricInstruments() {
-  const meter = metrics.getMeter('app', '1.0.0');
+  const meter = metrics.getMeter('app', '1.0.0')
   //
   // Instruments
   //
@@ -28,12 +28,12 @@ export function createMetricInstruments() {
   //
   const helloCount = meter.createCounter('hello.count', {
     description: 'Counts alias collisions',
-  });
+  })
   // helloCount.add(1, { foo: 'foo-value' })
 
   return {
     helloCount,
-  };
+  }
 }
 
-export type Instruments = ReturnType<typeof createMetricInstruments>;
+export type Instruments = ReturnType<typeof createMetricInstruments>

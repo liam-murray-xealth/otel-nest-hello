@@ -1,8 +1,12 @@
 # OTEL demo
 
-OTEL SDK installed for [sdk node](https://www.npmjs.com/package/@opentelemetry/sdk-node)
+See: [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node)
 
-See env in `.env`
+Note the SDK install tells you to install `@opentelemetry/auto-instrumentations-node`. This brings in automatic instrumentation for popular node packages including Nest.js, Mongoose, etc.
+
+See (and confirm) [environment configuration](./env). This configures collector address, etc.
+
+# Quickstart
 
 Start server
 
@@ -22,7 +26,13 @@ See prom metrics
 curl http://localhost:9464/metrics
 ```
 
-Run local jaeger to see traces
+Run local jaeger to see traces (we could move these to npm scripts)
 
 - task explorer->run
 - task explorer->browser
+
+Build docker (for testing docker build)
+
+```bash
+./build-docker.sh
+```
