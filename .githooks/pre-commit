@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# To install hooks for this repo (in your clone)
+#   git config core.hooksPath .githooks
+#
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# exec "${REPO_ROOT}/hack/verify-kep-metadata.sh"
+
