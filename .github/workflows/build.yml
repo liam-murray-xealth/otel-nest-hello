@@ -1,0 +1,99 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+    # Don't ignore md files since we run markdownlint
+    # paths-ignore:
+    #   - '**/README.md'
+
+  pull_request:
+    branches:
+      - main
+      - releases/**
+
+env:
+  IMAGE_NAME: otel-hello
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies with audit
+        run: |
+          npm ci
+          npm audit check --omit=dev
+          npm run lint
+          npm run build
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set env vars
+        run: |
+          GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          APP_VERSION=$(node -p 'require("./package.json")'.version)
+          
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" >> $GITHUB_ENV
+
+
+      - name: Build image
+        run: |
+          # ghcr.io/<GITUSER>/<IMAGE_NAME>
+          echo "Building $IMAGE_ID:$GITHUB_SHA_SHORT"
+          echo "GIT_HASH=$GITHUB_SHA_SHORT"
+          echo "APP_VERSION=$APP_VERSION"
+          docker build . --file Dockerfile \
+              --build-arg GIT_HASH=$GITHUB_SHA_SHORT \
+              --build-arg APP_VERSION=$APP_VERSION \
+              --label "runnumber=${GITHUB_RUN_ID}" \
+              --tag $IMAGE_ID:$GITHUB_SHA_SHORT
+
+          # if [[ "${{ github.ref }}" == "refs/heads/"main ]]
+
+      - name: Push image
+        run: |
+          # Always push image with github hash
+          echo "Pushing $IMAGE_ID:$GITHUB_SHA_SHORT"
+          docker push $IMAGE_ID:$GITHUB_SHA_SHORT
+
+          # Tag with version and push
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # main => "latest"
+            VERSION=latest
+          elif [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
+            # v1.2.3 => "1.2.3"
+            VERSION=${{ github.ref }}
+            VERSION=${VERSION##*/v}
+          fi
+
+          if [[ -n $VERSION ]]; then
+            echo "Pushing $IMAGE_ID:$VERSION"
+            docker tag $IMAGE_ID:$GITHUB_SHA_SHORT $IMAGE_ID:$VERSION
+            docker push $IMAGE_ID:$VERSION
+          fi
