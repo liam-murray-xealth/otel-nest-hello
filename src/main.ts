@@ -5,6 +5,7 @@ import { AppModule } from './app.module'
 import { INestApplication } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { Logger } from '@nestjs/common'
+import { LoggingInterceptor } from './interceptors/logging.interceptor'
 
 //
 /**
@@ -44,6 +45,7 @@ async function bootstrap() {
   await startOtel(ingnorePaths)
 
   const app = await NestFactory.create(AppModule)
+  app.useGlobalInterceptors(new LoggingInterceptor())
 
   const globalPrefix = ''
   const swaggerPath = 'api'
@@ -62,4 +64,6 @@ async function bootstrap() {
     Logger.log(`Swagger: http://localhost:${port}/${swaggerPath}`)
   })
 }
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap()

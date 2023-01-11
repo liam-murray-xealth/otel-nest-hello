@@ -1,4 +1,4 @@
-import { metrics, ValueType } from '@opentelemetry/api'
+import { metrics } from '@opentelemetry/api'
 
 // Refs (most blogs out of date!)
 //  https://www.npmjs.com/package/@opentelemetry/sdk-metrics

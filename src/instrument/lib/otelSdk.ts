@@ -125,7 +125,7 @@ export async function shutdownOtel() {
 /**
  * Needs to be done after you enableShutdownHooks() in Nest.js (otherwise nest clobbers)
  */
-export async function installShutdownOtelHooks() {
+export function installShutdownOtelHooks() {
   process.on('SIGINT', shutdownOtel)
   process.on('SIGTERM', shutdownOtel)
 }
