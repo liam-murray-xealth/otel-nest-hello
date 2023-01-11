@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: otel-hello
+  name: otel-hello
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: otel-hello
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: otel-hello
+      annotations:
+        k9scli.io/auto-port-forwards: otel-hello::8040:8080
+    spec: 
+      imagePullSecrets: []
+      containers:
+      - name: otel-hello
+        image: ghcr.io/liam-murray-xealth/otel-hello:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9464
+          name: metrics
+        - containerPort: 8080
+          name: http-web
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 5001
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 128Mi
+            cpu: 1000m
+        env:
+        - name: PORT
+          value: "8080"
+        - name: LOG_LEVEL
+          value: info
+        - name: OTELSDK_LOG_LEVEL
+          value: warn
+        - name: OTEL_SERVICE_NAME
+          value: otel-hello
+        - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+          value: "http://collector.opentelemetry:14268/api/traces"
+        - name: OTEL_EXPORTER_PROMETHEUS_PORT
+          value: "9464"
+        - name: OTEL_EXPORTER_JAEGER_PROTOCOL
+          value: "http/thrift.binary"
+        # Disable OTEL by default
+        - name: OTEL_SDK_DISABLED
+          value: "true"
+
+

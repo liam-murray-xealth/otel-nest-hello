@@ -1,0 +1,19 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: otel-hello
+spec:
+  rules:
+  - host: otel-hello.xyzlocal
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: otel-hello
+            port:
+              name: http-web
+
+ 
