@@ -4,5 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+#npm audit --omit=dev --audit-level=high > /dev/null
+
 npm run prettier
 npm run lint
