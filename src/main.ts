@@ -41,6 +41,7 @@ async function bootstrap() {
   logger.info(envLog, 'Environment')
 
   // Start SDK before nestjs factory create
+  // TODO ignore paths is a hack
   const ingnorePaths = ['/metrics', '/health', '/^/health/.*$']
   await startOtel(ingnorePaths)
 
