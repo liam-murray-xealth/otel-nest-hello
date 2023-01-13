@@ -29,6 +29,8 @@ rules:
     - single
     - allowTemplateLiterals: true
       avoidEscape: true
+  no-useless-return:
+    - warn
   '@typescript-eslint/no-unused-vars':
     - warn
     - vars: all
@@ -51,5 +53,8 @@ rules:
     - allowDestructuring: true
       allowedNames:
         - self
+  '@typescript-eslint/require-await':
+    - warn
   '@typescript-eslint/no-floating-promises':
     - warn
+  
