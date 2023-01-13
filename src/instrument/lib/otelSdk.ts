@@ -12,6 +12,7 @@ import { PrometheusExporter } from '@opentelemetry/exporter-prometheus'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
 import * as process from 'process'
+import { DropAggregation, View } from '@opentelemetry/sdk-metrics'
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api'
 import { logger } from './logging'
 
@@ -47,7 +48,6 @@ function mapDiagLevel(level: string): DiagLogLevel {
 }
 
 // TODO
-//  - http instrumentation adds noisy route level metrics (can we disable?)
 //  - figure out way to enable/disable traces based on route annotations
 //  - configure sampler so we let ingress determine which paths to sample
 //
@@ -69,8 +69,15 @@ function createSdk(ignorePaths: string[]) {
     logger.info(`Prometheus metrics: http://localhost:${port}${endpoint}`)
   })
 
+  // https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/metrics.md
+  const dropHttpMetricsView = new View({
+    aggregation: new DropAggregation(),
+    meterName: '@opentelemetry/instrumentation-http',
+  })
+
   const sdk = new NodeSDK({
     metricReader: prometheusExporter,
+    views: [dropHttpMetricsView],
     spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
     contextManager: new AsyncLocalStorageContextManager(),
     textMapPropagator: new CompositePropagator({
