@@ -109,7 +109,7 @@ export async function startOtel(ignorePaths: string[] = defaultIgnorePaths) {
     throw new Error('OtelSDK exit pending')
   }
   otelSDK = createSdk(ignorePaths)
-  return otelSDK.start()
+  await otelSDK.start()
 }
 
 let exitPending = false
