@@ -13,10 +13,10 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor'
  */
 function initOpenApi(app: INestApplication, path: string) {
   const config = new DocumentBuilder()
-    .setTitle('Url Shortener')
-    .setDescription('Provides short URL aliases and redirection')
+    .setTitle('Hello Otel')
+    .setDescription('Sample service demonstrating Node.js OpenTelemetry instrumentation')
     .setVersion('1.0')
-    .addTag('urls')
+    //.addTag('hello')
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup(path, app, document)
