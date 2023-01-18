@@ -3,3 +3,4 @@
 // Order is important so instrumentations.ts is loaded first
 export * from './lib/otelSdk'
 export * from './lib/logging'
+export * from './lib/objectUtils'

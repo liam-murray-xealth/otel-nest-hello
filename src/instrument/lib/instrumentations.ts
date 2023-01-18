@@ -15,17 +15,16 @@ function shouldIgnore(route: string): boolean {
   return !!ignorePaths.find(a => route.match(a))
 }
 
-function renameField(record: Record<string, unknown>, from: string, to: string) {
-  if (from in record) {
-    record[to] = record[from]
-    delete record[from]
-  }
-}
-function renameFields(record: Record<string, unknown>, mapping: Record<string, string>) {
-  for (const [key, value] of Object.entries(mapping)) {
-    renameField(record, key, value)
-  }
-}
+// Example: how to rename "trace_id" and other fields added by pino instrumentation
+//
+// const logHook = (_span, record: Record<string, unknown>, _level?: number) => {
+//   // Customize names (e.g. Grafana datasource looks for traceId, etc.)
+//   renameFields(record, {
+//     trace_id: 'traceId',
+//     span_id: 'spanId',
+//     trace_flags: 'traceFlags',
+//   })
+// }
 
 // This function (getNodeAutoInstrumentations) automatically instruments a variety
 // of common node libraries such as http, pino, mongoose, fs, etc.
@@ -44,14 +43,7 @@ export const nodeInstrumentations = getNodeAutoInstrumentations({
   },
   '@opentelemetry/instrumentation-pino': {
     enabled: true,
-    logHook: (_span, record: Record<string, unknown>, _level?: number) => {
-      // Customize names (e.g. Grafana datasource looks for traceId, etc.)
-      renameFields(record, {
-        trace_id: 'traceId',
-        span_id: 'spanId',
-        trace_flags: 'traceFlags',
-      })
-    },
+    // logHook,
   },
   '@opentelemetry/instrumentation-http': {
     ignoreIncomingRequestHook: (req: IncomingMessage) => {
