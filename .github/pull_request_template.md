@@ -8,10 +8,10 @@
 
 ### Description
 
-<!-- Testing comments -->
+<!-- Details of changes -->
+
+### Changes
+
+<!-- Testing comments  -->
 
 ### Testing
-
-<!-- Additional information -->
-
-### Comments
