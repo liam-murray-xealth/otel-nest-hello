@@ -6,7 +6,7 @@ import { INestApplication } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { Logger } from '@nestjs/common'
 import { LoggingInterceptor } from './interceptors/logging.interceptor'
-
+import { runSpan } from './instrument'
 //
 /**
  * Setups up /api endoint to provide Swagger
@@ -24,26 +24,6 @@ function initOpenApi(app: INestApplication, path: string) {
 
 async function bootstrap() {
   Logger.log('Bootstrapping...')
-
-  const env = [
-    'OTEL_EXPORTER_JAEGER_ENDPOINT',
-    'OTEL_EXPORTER_JAEGER_PROTOCOL',
-    'OTEL_SERVICE_NAME',
-    'OTEL_SDK_DISABLED',
-    'OTEL_EXPORTER_PROMETHEUS_PORT',
-    'GITHUB_SHA_SHORT',
-  ]
-
-  const envLog = env.reduce((p, c) => {
-    p[c] = process.env[c] || '(unset)'
-    return p
-  }, {})
-  logger.info(envLog, 'Environment')
-
-  // Start SDK before nestjs factory create
-  // TODO ignore paths is a hack
-  const ingnorePaths = ['/metrics', '/health', '/^/health/.*$']
-  await startOtel(ingnorePaths)
 
   const app = await NestFactory.create(AppModule)
   app.useGlobalInterceptors(new LoggingInterceptor())
@@ -66,5 +46,30 @@ async function bootstrap() {
   })
 }
 
+async function main() {
+  const env = [
+    'OTEL_EXPORTER_JAEGER_ENDPOINT',
+    'OTEL_EXPORTER_JAEGER_PROTOCOL',
+    'OTEL_SERVICE_NAME',
+    'OTEL_SDK_DISABLED',
+    'OTEL_EXPORTER_PROMETHEUS_PORT',
+    'GITHUB_SHA_SHORT',
+  ]
+
+  const envLog = env.reduce((p, c) => {
+    p[c] = process.env[c] || '(unset)'
+    return p
+  }, {})
+  logger.info(envLog, 'Environment')
+
+  // Start SDK before nestjs factory create
+  // TODO ignore paths is a hack
+  const ingnorePaths = ['/metrics', '/health', '/^/health/.*$']
+  await startOtel(ingnorePaths)
+
+  // Run bootstrap under a span
+  await runSpan(bootstrap, { name: 'bootstrap' })
+}
+
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-bootstrap()
+main()
