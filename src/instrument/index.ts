@@ -2,5 +2,6 @@
 // See comments in instrumentations.ts
 // Order is important so instrumentations.ts is loaded first
 export * from './lib/otelSdk'
+export * from './lib/traceUtil'
 export * from './lib/logging'
 export * from './lib/objectUtils'

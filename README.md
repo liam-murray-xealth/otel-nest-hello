@@ -37,3 +37,14 @@ Next steps:
 
 - Build and test docker image: [docker build readme](./docker/README.md)
 - Deploy to kubernetes: [Kubernetes deploy readme](./kubernetes/otel-hello/README.md)
+
+## References
+
+### OpenTelemetry Tracing
+
+- [Instrumentation Docs](https://opentelemetry.io/docs/instrumentation/js/instrumentation/)
+- [Blog with trace examples](https://uptrace.dev/opentelemetry/js-tracing.html#quickstart)
+
+### Nest.js
+
+- [Great Nest.js REST API intro](https://www.thisdot.co/blog/introduction-to-restful-apis-with-nestjs) (source for posts service)
