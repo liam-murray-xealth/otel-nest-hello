@@ -57,4 +57,5 @@ rules:
     - warn
   '@typescript-eslint/no-floating-promises':
     - warn
-  
+  '@typescript-eslint/no-unnecessary-condition':
+    - warn

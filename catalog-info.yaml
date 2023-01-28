@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: otel-nest-hello
+  description: |
+    Example Nest.js App with OpenTelemetry SDK incorporated
+  annotations:
+    github.com/project-slug: liam-murray-xealth/otel-nest-hello
+    backstage.io/techdocs-ref: dir:.
+    lighthouse.com/website-url: https://backstage.io
+spec:
+  type: service
+  owner: liam.murray@xealth.com
+  lifecycle: experimental
