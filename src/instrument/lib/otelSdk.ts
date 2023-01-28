@@ -29,7 +29,7 @@ import { logger } from './logging'
 /**
  * Map OTEL_API_DEBUG_LEVEL=>DiagLogLevel
  */
-function mapDiagLevel(level: string): DiagLogLevel {
+function mapDiagLevel(level: string | undefined): DiagLogLevel {
   if (level === undefined) {
     return DiagLogLevel.NONE
   }

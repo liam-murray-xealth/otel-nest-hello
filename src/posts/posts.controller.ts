@@ -18,7 +18,7 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
-import { HttpExceptionFilter } from 'src/filters/http-exception-filter'
+import { HttpExceptionFilter } from '../filters/http-exception-filter'
 
 @Controller('posts')
 @ApiTags('posts')

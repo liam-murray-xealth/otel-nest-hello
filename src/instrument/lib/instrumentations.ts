@@ -1,7 +1,7 @@
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { IncomingMessage } from 'http'
 
-let ignorePaths = []
+let ignorePaths: string[] = []
 
 export function setIgnorePaths(paths: string[]) {
   ignorePaths = paths
@@ -12,7 +12,7 @@ export function setIgnorePaths(paths: string[]) {
 // Ideally we want to ignore incoming on all non-routes
 //
 function shouldIgnore(route: string): boolean {
-  return !!ignorePaths.find(a => route.match(a))
+  return !!ignorePaths.find(a => route.match(a) != null)
 }
 
 // Example: how to rename "trace_id" and other fields added by pino instrumentation
@@ -54,7 +54,7 @@ export const nodeInstrumentations = getNodeAutoInstrumentations({
       if (req.method === 'OPTIONS') {
         return true
       }
-      if (shouldIgnore(req.url)) {
+      if (req.url && shouldIgnore(req.url)) {
         return true
       }
       // logger.debug({ method, url }, 'RequestHook: not ignoring')

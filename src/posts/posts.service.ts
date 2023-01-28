@@ -3,7 +3,7 @@ import { PostModel } from './posts.interface'
 
 @Injectable()
 export class PostsService {
-  private posts: Array<PostModel> = []
+  private posts: PostModel[]
   private readonly logger = new Logger(PostsService.name)
 
   public findAll(): Array<PostModel> {
@@ -11,8 +11,7 @@ export class PostsService {
   }
 
   public findOne(id: number): PostModel {
-    const post: PostModel = this.posts.find(post => post.id === id)
-
+    const post = this.posts.find(post => post.id === id)
     if (!post) {
       throw new NotFoundException('Post not found.')
     }
@@ -22,13 +21,13 @@ export class PostsService {
 
   public create(post: PostModel): PostModel {
     // if the title is already in use by another post
-    const titleExists: boolean = this.posts.some(item => item.title === post.title)
+    const titleExists = this.posts.some(item => item.title === post.title)
     if (titleExists) {
       throw new UnprocessableEntityException('Post title already exists.')
     }
 
     // find the next id for a new blog post
-    const maxId: number = Math.max(...this.posts.map(post => post.id), 0)
+    const maxId: number = Math.max(...this.posts.map(post => post.id || -1))
     const id: number = maxId + 1
 
     const blogPost: PostModel = {
