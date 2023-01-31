@@ -33,6 +33,22 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      # https://backstage.io/docs/features/techdocs/configuring-ci-cd
+      #
+      # Example (n)
+      - name: Setup techdocs
+        run: |
+          npm install -g @techdocs/cli
+          pip install mkdocs-techdocs-core==1.*
+
+      - name: Generate docs
+        run: |
+          techdocs-cli generate --no-docker
+
+      # - name: Publish docs
+      #   run: |
+      #     techdocs-cli publish --publisher-type awsS3 --storage-name <bucket/container> --entity <Namespace/Kind/Name>
+
       - name: Install dependencies with audit
         run: |
           npm ci
