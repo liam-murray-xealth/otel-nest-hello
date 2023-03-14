@@ -30,7 +30,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: otel-hello
-        image: ghcr.io/liam-murray-xealth/otel-hello:latest
+        image: ghcr.io/liam-murray-xealth/otel-nest-hello:latest
         imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false

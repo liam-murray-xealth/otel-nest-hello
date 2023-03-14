@@ -2,7 +2,7 @@
 version: '3.4'
 services:
   otel-hello:
-    image: ghcr.io/liam-murray-xealth/otel-hello:${IMAGE_TAG}
+    image: ghcr.io/liam-murray-xealth/otel-nest-hello:${IMAGE_TAG}
     environment:
       LOG_LEVEL: debug
       PORT: 8080
