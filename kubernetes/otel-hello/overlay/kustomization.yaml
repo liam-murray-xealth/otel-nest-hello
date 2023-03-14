@@ -13,5 +13,5 @@ patches:
 
 
 images:
-- name: ghcr.io/liam-murray-xealth/otel-hello:latest
-  newTag: latest
+- name: ghcr.io/liam-murray-xealth/otel-nest-hello
+  newTag: main
