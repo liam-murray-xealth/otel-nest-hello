@@ -13,25 +13,32 @@ on:
       - releases/**
 
 env:
-  IMAGE_NAME: otel-hello
+  # ghcr.io/<user>/<repo>
+  DOCKER_REPO: ghcr.io/${{ github.repository }}
+
+  # https://docs.docker.com/build/buildkit/#getting-started
+  DOCKER_BUILDKIT: 1
+
+  # IMAGE_NAME: otel-hello
 
 jobs:
   build:
+    name: Build and push docker images
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
-    strategy:
-      matrix:
-        node-version: [16]
+    # strategy:
+    #   matrix:
+    #     node-version: [18]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node ${{ matrix.node-version }}
+      - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
 
       # https://backstage.io/docs/features/techdocs/configuring-ci-cd
       #
@@ -66,51 +73,67 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set env vars
+      - name: Set environment variables
         run: |
-          GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          # For version built into app
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+          # For a non-monorepo the image id is the docker base repo
+          # For a monorepo we can use $DOCKER_REPO/imageid:<tag>
+          IMAGE_ID=$DOCKER_REPO
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          APP_VERSION=$(node -p 'require("./package.json")'.version)
-          
           echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
-          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
-          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" >> $GITHUB_ENV
 
+      #
+      # refs/tags:  v1.2.3 => 1.2, 1.3
+      # refs/pull:  pr-N
+      # refs/heads: branch name
+      # all:        sha-GITHUB_SHA that triggered workflow
+      #
+      # PR example:
+      #  image_placeholder:pr-2
+      #  image_placeholder:pr-2-336d3659b2f7a73796fbeb0d2a0ac5c28dc57300 (PR commit)
+      #  image_placeholder:sha-269f8a4bab631d4052ffbee2426e271efd4ac62e (Merge commit)
+      #
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ${{ env.IMAGE_ID }}
+          labels: org.opencontainers.image.title=Otel Hello
+            org.opencontainers.image.description=Example Nest.js service using open telemetry
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=pr,suffix=-${{ github.event.pull_request.head.sha }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=long,prefix=sha-
 
-      - name: Build image
+      - name: Show docker meta
         run: |
-          # ghcr.io/<GITUSER>/<IMAGE_NAME>
-          echo "Building $IMAGE_ID:$GITHUB_SHA_SHORT"
-          echo "GIT_HASH=$GITHUB_SHA_SHORT"
-          echo "APP_VERSION=$APP_VERSION"
-          cd docker
-          docker build .. --file Dockerfile \
-              --build-arg GIT_HASH=$GITHUB_SHA_SHORT \
-              --build-arg APP_VERSION=$APP_VERSION \
-              --label "runnumber=${GITHUB_RUN_ID}" \
-              --tag $IMAGE_ID:$GITHUB_SHA_SHORT
+          echo -e "tags:\n ${{ steps.meta.outputs.tags }}"
+          echo -e "labels:\n ${{ steps.meta.outputs.labels }}"
 
-          # if [[ "${{ github.ref }}" == "refs/heads/"main ]]
+      - name: Set up QEMU for docker build push action
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: Push image
-        run: |
-          # Always push image with github hash
-          echo "Pushing $IMAGE_ID:$GITHUB_SHA_SHORT"
-          docker push $IMAGE_ID:$GITHUB_SHA_SHORT
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-          # Tag with version and push
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            # main => "latest"
-            VERSION=latest
-          elif [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
-            # v1.2.3 => "1.2.3"
-            VERSION=${{ github.ref }}
-            VERSION=${VERSION##*/v}
-          fi
-
-          if [[ -n $VERSION ]]; then
-            echo "Pushing $IMAGE_ID:$VERSION"
-            docker tag $IMAGE_ID:$GITHUB_SHA_SHORT $IMAGE_ID:$VERSION
-            docker push $IMAGE_ID:$VERSION
-          fi
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          # docker image build . --file docker/Dockerfile
+          context: .
+          file: docker/Dockerfile
+          push: true
+          # push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

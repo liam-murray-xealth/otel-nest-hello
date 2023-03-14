@@ -17,4 +17,4 @@ services:
       - ${METRICS_PORT}:9464
     build:
       context: ../
-      dockerfile: ${PWD}/dockerfile
+      dockerfile: ${PWD}/Dockerfile
