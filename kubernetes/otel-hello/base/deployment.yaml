@@ -23,10 +23,21 @@ spec:
         k9scli.io/auto-port-forwards: otel-hello::8040:8080
     spec: 
       imagePullSecrets: []
+      serviceAccountName: otel-hello
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: otel-hello
         image: ghcr.io/liam-murray-xealth/otel-hello:latest
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
         ports:
         - containerPort: 9464
           name: metrics
