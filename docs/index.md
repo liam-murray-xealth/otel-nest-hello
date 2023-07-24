@@ -2,6 +2,11 @@
 
 This project demonstrates a Nest.js service configured for traces and metrics using the [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node).
 
+It also has some useful random experimentation:git :)
+
+- posts api
+- memory leak
+
 The SDK install guide (above link) tells you to install `@opentelemetry/auto-instrumentations-node`.
 
 This brings in automatic instrumentation for popular node packages including Nest.js, Mongoose, etc. You don't need to install these packages separately.
@@ -38,6 +43,22 @@ Next steps:
 - Build and test docker image: [docker build readme](./docker/README.md)
 - Deploy to kubernetes: [Kubernetes deploy readme](./kubernetes/otel-hello/README.md)
 
+## Nest.js
+
+Generate new REST API
+
+```bash
+npx @nestjs/cli@latest generate resource memoryleak
+```
+
+## Memory leak
+
+Run with insepector
+
+1. Run start:debug
+1. Output will have `Debugger listening on ws://127.0.0.1:9229`
+1. Launch [chrome://inspect/](chrome://inspect/)
+
 ## References
 
 ### OpenTelemetry Tracing
@@ -48,7 +69,6 @@ Next steps:
 ### Nest.js
 
 - [Great Nest.js REST API intro](https://www.thisdot.co/blog/introduction-to-restful-apis-with-nestjs) (source for posts service)
-
 
 ## Project layout
 
