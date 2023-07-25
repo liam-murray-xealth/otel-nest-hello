@@ -33,10 +33,12 @@ See prom metrics
 curl http://localhost:9464/metrics
 ```
 
-Run local jaeger to see traces (we could move these to npm scripts)
+Run local [jaeger](https://www.jaegertracing.io/docs/1.47/getting-started/) to see traces (we could move these to npm scripts)
 
 - task explorer->run
 - task explorer->browser
+
+This will listen for various export formats. We will use [otel http](https://www.npmjs.com/package/@opentelemetry/exporter-trace-otlp-http) (on 4318) since exporter-jaeger is being deprecated.
 
 Next steps:
 

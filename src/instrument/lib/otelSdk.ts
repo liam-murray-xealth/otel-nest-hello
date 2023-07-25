@@ -5,7 +5,8 @@ import {
 } from '@opentelemetry/core'
 import { nodeInstrumentations, setIgnorePaths } from './instrumentations'
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base'
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger'
+// import { JaegerExporter } from '@opentelemetry/exporter-jaeger'
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { JaegerPropagator } from '@opentelemetry/propagator-jaeger'
 import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3'
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus'
@@ -21,11 +22,17 @@ import { logger } from './logging'
 //
 // OTEL_EXPORTER_PROMETHEUS_PORT: 9464 (default)
 // OTEL_SERVICE_NAME "urls-backend"
-// OTEL_EXPORTER_JAEGER_PROTOCOL: "http/thrift.binary" (default)
-// OTEL_EXPORTER_JAEGER_ENDPOINT: http://localhost:14268/api/traces (jaeger http endpont)
 // OTEL_SDK_DISABLED: false (default)
 //
 
+// DEPRECATED
+// OTEL_EXPORTER_JAEGER_PROTOCOL: "http/thrift.binary" (default)
+// OTEL_EXPORTER_JAEGER_ENDPOINT: http://localhost:14268/api/traces (jaeger http endpont)
+//
+// NEW (traces go to /v1/traces under this)
+// See: https://opentelemetry.io/docs/concepts/sdk-configuration/otlp-exporter-configuration/
+// OTEL_EXPORTER_OTLP_ENDPOINT  http://localhost:4318
+//
 /**
  * Map OTEL_API_DEBUG_LEVEL=>DiagLogLevel
  */
@@ -78,7 +85,14 @@ function createSdk(ignorePaths: string[]) {
   const sdk = new NodeSDK({
     metricReader: prometheusExporter,
     views: [dropHttpMetricsView],
-    spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
+    //spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
+    spanProcessor: new BatchSpanProcessor(
+      new OTLPTraceExporter({
+        // url: '<opentelemetry-collector-url>', // default is http://localhost:4318/v1/traces
+        headers: {}, // an optional object containing custom headers to be sent with each request
+        concurrencyLimit: 10, // an optional limit on pending requests
+      })
+    ),
     contextManager: new AsyncLocalStorageContextManager(),
     textMapPropagator: new CompositePropagator({
       // Define the types of trace headers we can receive and forward along

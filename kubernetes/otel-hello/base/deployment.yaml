@@ -65,12 +65,14 @@ spec:
           value: warn
         - name: OTEL_SERVICE_NAME
           value: otel-hello
-        - name: OTEL_EXPORTER_JAEGER_ENDPOINT
-          value: "http://collector.opentelemetry:14268/api/traces"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://collector.opentelemetry:4318"
+        # - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+        #   value: "http://collector.opentelemetry:14268/api/traces"
         - name: OTEL_EXPORTER_PROMETHEUS_PORT
           value: "9464"
-        - name: OTEL_EXPORTER_JAEGER_PROTOCOL
-          value: "http/thrift.binary"
+        # - name: OTEL_EXPORTER_JAEGER_PROTOCOL
+        #   value: "http/thrift.binary"
         # Disable OTEL by default
         - name: OTEL_SDK_DISABLED
           value: "true"
