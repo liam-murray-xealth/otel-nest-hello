@@ -1,20 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MemoryleakController } from './memoryleak.controller';
-import { MemoryleakService } from './memoryleak.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { MemoryleakController } from './memoryleak.controller'
+import { MemoryleakService } from './memoryleak.service'
 
 describe('MemoryleakController', () => {
-  let controller: MemoryleakController;
+  let controller: MemoryleakController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemoryleakController],
       providers: [MemoryleakService],
-    }).compile();
+    }).compile()
 
-    controller = module.get<MemoryleakController>(MemoryleakController);
-  });
+    controller = module.get<MemoryleakController>(MemoryleakController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).toBeDefined()
+  })
+})
