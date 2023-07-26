@@ -1,8 +1,7 @@
 //import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
 import { Controller, Get, UseFilters } from '@nestjs/common'
 import { MemoryleakService } from './memoryleak.service'
-// import { CreateMemoryleakDto } from './dto/create-memoryleak.dto'
-// import { UpdateMemoryleakDto } from './dto/update-memoryleak.dto'
+import { CreateTimerleakDto } from './dto/create-timerleak.dto'
 
 import { HttpExceptionFilter } from '../filters/http-exception-filter'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
@@ -13,10 +12,25 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 export class MemoryleakController {
   constructor(private readonly memoryleakService: MemoryleakService) {}
 
-  @Get()
+  @Get('/closure')
   @ApiOkResponse({ description: 'Leak created successfully' })
   closureLeak() {
     return this.memoryleakService.createClosureLeak()
+  }
+
+  @Get('/small_string')
+  @ApiOkResponse({ description: 'Leak created successfully' })
+  smallStringLeak() {
+    return this.memoryleakService.createSmallstringLeak()
+  }
+
+  @Get('/timeout')
+  @ApiOkResponse({
+    description: 'Leak created successfully',
+    type: CreateTimerleakDto,
+  })
+  longTimeoutLeak() {
+    return this.memoryleakService.createLongTimeoutLeak()
   }
 
   // @Get(':id')
