@@ -43,7 +43,7 @@ jobs:
         run: npm run test
 
       - name: Build and push docker
-        uses: ./.github/actions/docker-build.yml
+        uses: ./.github/actions/docker-build
         with:
           labels: |
             org.opencontainers.image.title=Otel Demo
