@@ -38,7 +38,7 @@ class Timeouts {
   }
 
   private cancelAll() {
-    for (let id of this.pending.keys()) {
+    for (const id of this.pending.keys()) {
       clearTimeout(id)
     }
     this.pending.clear()

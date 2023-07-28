@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    name: Build and push docker images
+    name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -42,7 +42,8 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - uses: ./.github/actions/docker-build.yml
+      - name: Build and push docker
+        uses: ./.github/actions/docker-build.yml
         with:
           labels: |
             org.opencontainers.image.title=Otel Demo
