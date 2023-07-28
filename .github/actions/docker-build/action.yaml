@@ -8,14 +8,11 @@ inputs:
     #   org.opencontainers.image.title=My Title
     #   org.opencontainers.image.description=My description
     required: false 
-env:
-  REPO_GHCR: ghcr.io
-  DOCKER_BUILDKIT: 1
-
 runs:
   using: composite
   steps:
     - name: Set environment variables
+      shell: bash
       run: |
         # Make short SHAs
         GITHUB_SHA_SHORT=${GITHUB_SHA:0:7}
@@ -79,6 +76,7 @@ runs:
           type=sha,format=short,prefix=sha-
 
     - name: Show docker meta
+      shell: bash
       run: |
         echo -e "tags:\n${{ steps.meta.outputs.tags }}"
         echo -e "labels:\n${{ steps.meta.outputs.labels }}"
