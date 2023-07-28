@@ -50,5 +50,4 @@ jobs:
             org.opencontainers.image.description=Nest.Js with OTEL and other random experimentation
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          REPO_GHCR: ghcr.io
           DOCKER_BUILDKIT: 1
