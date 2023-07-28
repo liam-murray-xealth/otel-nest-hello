@@ -8,6 +8,10 @@ inputs:
     #   org.opencontainers.image.title=My Title
     #   org.opencontainers.image.description=My description
     required: false 
+  github-token:
+    description: github token
+    required: true
+
 runs:
   using: composite
   steps:
@@ -91,7 +95,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.github-token }}
 
     - name: Build and push
       uses: docker/build-push-action@v4
