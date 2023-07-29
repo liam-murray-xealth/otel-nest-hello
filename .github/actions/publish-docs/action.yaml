@@ -1,0 +1,56 @@
+---
+name: Publish Docs
+description: Publish documentation for Backstage
+# see https://backstage.io/docs/features/techdocs/configuring-ci-cd
+inputs:
+  aws-region: 
+    description: AWS region
+    default: us-west-2
+    required: false
+  role-to-assume:
+    description: IAM role to assume
+    default: arn:aws:iam::372080370602:role/github-actions/github-actions-push-techdocs20230728040639300000000001
+    required: false
+  bucket-name:
+    description: S3 bucket name
+    default: xealth-techdocs
+    required: false
+  path:
+    description: S3 root folder for documentation site
+    default: ${{ github.repository }}
+    required: false
+  entity:
+    description: Entity to publish (normally default/Component/<NAME> based on catalog-info.yaml)
+    default: default/Component/otel-nest-hello
+    required: true
+
+  
+runs:
+  using: composite
+  steps:
+    - name: Install techdocs-cli
+      shell: bash
+      run: |
+        npm install -g @techdocs/cli
+        pip install mkdocs-techdocs-core==1.*
+
+    - name: Run techdocs-cli (generate doc site)
+      shell: bash
+      run: |
+        techdocs-cli generate --no-docker
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with: 
+        role-to-assume: ${{ inputs.role-to-assume }}
+        aws-region: ${{ inputs.aws-region }}
+    
+    - name: Publish docs to S3
+      shell: bash
+      run: |
+        techdocs-cli publish \
+          --publisher-type awsS3 \
+          --storage-name ${{ inputs.bucket-name }} \
+          --awsBucketRootPath ${{ inputs.path }} \
+          --entity ${{ inputs.entity }}
+

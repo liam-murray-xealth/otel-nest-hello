@@ -12,7 +12,7 @@ on:
 
 env:
   AWS_REGION: us-west-2
-  IAM_ROLE_PUBLISH_TECHDOCS: arn:aws:iam::372080370602:role/github-actions/github-actions-push-techdocs20230728040639300000000001
+  IAM_ROLE_PUBLISH_TECHDOCS:
 
 jobs:
   build:
@@ -41,6 +41,11 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Publish docs
+        uses: ./.github/actions/publish-docs
+        with:
+          entity: default/Component/otel-nest-hello
 
       - name: Build and push docker
         uses: ./.github/actions/docker-build
