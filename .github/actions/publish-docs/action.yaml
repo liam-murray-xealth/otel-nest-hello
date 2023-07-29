@@ -3,13 +3,13 @@ name: Publish Docs
 description: Publish documentation for Backstage
 # see https://backstage.io/docs/features/techdocs/configuring-ci-cd
 inputs:
-  aws-region: 
-    description: AWS region
-    default: us-west-2
-    required: false
   role-to-assume:
     description: IAM role to assume
     default: arn:aws:iam::372080370602:role/github-actions/github-actions-push-techdocs
+    required: false
+  aws-region: 
+    description: AWS region for assume role
+    default: us-west-2
     required: false
   bucket-name:
     description: S3 bucket name
@@ -36,7 +36,7 @@ runs:
     - name: Generate role sesion name
       shell: bash
       run: |
-        echo "ROLE_SESSION_NAME=gitub-actions@${REPO//\//@}" | tee $GITHUB_ENV
+        echo "ROLE_SESSION_NAME=gha@${REPO//\//@}" | tee $GITHUB_ENV
       env:
         REPO: ${{ github.repository }}
 
