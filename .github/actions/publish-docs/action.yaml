@@ -9,7 +9,7 @@ inputs:
     required: false
   role-to-assume:
     description: IAM role to assume
-    default: arn:aws:iam::372080370602:role/github-actions/github-actions-push-techdocs20230728040639300000000001
+    default: arn:aws:iam::372080370602:role/github-actions/github-actions-push-techdocs
     required: false
   bucket-name:
     description: S3 bucket name
@@ -47,6 +47,7 @@ runs:
     
     - name: Publish docs to S3
       shell: bash
+      # This store docs under namespace/kind/name (entity name) 
       run: |
         techdocs-cli publish \
           --publisher-type awsS3 \
