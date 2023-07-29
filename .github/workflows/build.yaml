@@ -24,6 +24,12 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Dump context for debugging
+        run: |
+          echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
       - name: Checkout code
         uses: actions/checkout@v3
 
