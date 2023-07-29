@@ -25,6 +25,7 @@ jobs:
       contents: read
     steps:
       - name: Dump context for debugging
+        if: ${{ false }}
         run: |
           echo "$GITHUB_CONTEXT"
         env:

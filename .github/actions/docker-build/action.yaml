@@ -12,6 +12,10 @@ inputs:
     description: github repo
     default: ghcr.io
     required: false
+  dockerfile:
+    description: Dockerfile path
+    default: docker/Dockerfile
+    required: false
 
 runs:
   using: composite
@@ -26,7 +30,7 @@ runs:
         # For a non-monorepo the image id is the docker base repo
         # For a monorepo we can use ${{ inputs.github-repo }}/$PROJECT:<tag>
   
-        echo "GITHUB_BRANCH=$GITHUB_BRANCH" | tee $GITHUB_ENV
+        echo "GIT_BRANCH=$GIT_BRANCH" | tee $GITHUB_ENV
         echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" | tee $GITHUB_ENV
         echo "GITHUB_PR_SHA_SHORT=$GITHUB_PR_SHA_SHORT" | tee $GITHUB_ENV
         echo "GHCR_IMAGE=${GHCR_IMAGE_MIXED,,}" | tee $GITHUB_ENV
@@ -35,7 +39,7 @@ runs:
         # Above we conert mixed case to lowercase using ${VAR,,}
         GHCR_IMAGE_MIXED: ${{ inputs.github-repo }}/${{ github.repository }}
         GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
-        GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+        GIT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
     #
     # Define tags based on workflow event
@@ -99,7 +103,7 @@ runs:
         context: .
         # Uncomment to support arm64 as well
         # platforms: linux/amd64,linux/arm64
-        file: docker/Dockerfile
+        file: ${{ inputs.dockerfile }}
         # Push when: a) commit to target; b) PR labeled "preview"
         push: ${{ github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'preview') }}
         tags: ${{ steps.meta.outputs.tags }}

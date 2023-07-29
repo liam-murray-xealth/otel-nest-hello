@@ -36,7 +36,7 @@ runs:
     - name: Generate role sesion name
       shell: bash
       run: |
-        echo "ROLE_SESSION_NAME=gha@${REPO//\//@}" | tee $GITHUB_ENV
+        echo "ROLE_SESSION_NAME=gha@${REPO//\//.}" | tee $GITHUB_ENV
       env:
         REPO: ${{ github.repository }}
 
