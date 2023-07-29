@@ -15,16 +15,10 @@ inputs:
     description: S3 bucket name
     default: xealth-techdocs
     required: false
-  path:
-    description: S3 root folder for documentation site
-    default: ${{ github.repository }}
-    required: false
   entity:
     description: Entity to publish (normally default/Component/<NAME> based on catalog-info.yaml)
     default: default/Component/otel-nest-hello
     required: true
-
-  
 runs:
   using: composite
   steps:
@@ -47,11 +41,9 @@ runs:
     
     - name: Publish docs to S3
       shell: bash
-      # This store docs under namespace/kind/name (entity name) 
       run: |
         techdocs-cli publish \
           --publisher-type awsS3 \
           --storage-name ${{ inputs.bucket-name }} \
-          --awsBucketRootPath ${{ inputs.path }} \
           --entity ${{ inputs.entity }}
 
