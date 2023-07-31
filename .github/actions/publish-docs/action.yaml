@@ -47,7 +47,7 @@ runs:
         aws-region: ${{ inputs.aws-region }}
         role-session-name: ${{ env.ROLE_SESSION_NAME }}
     
-    # End up on s3://BUCKET/default/component/otel-nest-hello/index.html
+    # End up on s3://BUCKET/default/component/META-NAME/index.html
     - name: Publish docs to S3
       shell: bash
       run: |
