@@ -23,20 +23,12 @@ runs:
     - name: Set environment variables
       shell: bash
       run: |
-        # Make short SHAs
-        GITHUB_SHA_SHORT=${GITHUB_SHA:0:7}
-        GITHUB_PR_SHA_SHORT=${GITHUB_PR_SHA:0:7}
-
-        # For a non-monorepo the image id is the docker base repo
-        # For a monorepo we can use ${{ inputs.github-repo }}/$PROJECT:<tag>
-  
+      
         echo "GIT_BRANCH=$GIT_BRANCH" | tee -a $GITHUB_ENV
-        echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" | tee -a $GITHUB_ENV
-        echo "GITHUB_PR_SHA_SHORT=$GITHUB_PR_SHA_SHORT" | tee -a $GITHUB_ENV
-        echo "GHCR_IMAGE=${GHCR_IMAGE_MIXED,,}" | tee -a $GITHUB_ENV
-
+        echo "GITHUB_SHA_SHORT=${GITHUB_SHA:0:7}" | tee -a $GITHUB_ENV
+        echo "GITHUB_PR_SHA_SHORT=${GITHUB_PR_SHA:0:7}" | tee -a $GITHUB_ENV
+        echo "ECR_IMAGE=${ECR_IMAGE_MIXED,,}" | tee -a $GITHUB_ENV
       env:
-        # Above we conert mixed case to lowercase using ${VAR,,}
         GHCR_IMAGE_MIXED: ${{ inputs.github-repo }}/${{ github.repository }}
         GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
         GIT_BRANCH: ${{ github.head_ref || github.ref_name }}
