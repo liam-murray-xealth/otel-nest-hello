@@ -12,7 +12,7 @@ function createGetter(elementCount: number) {
   const elements = Array.from(Array(elementCount).keys())
 
   return function getRandomElement() {
-    // return a random number from elements array
+    // return a random number from the array
     return elements[Math.floor(Math.random() * elements.length)]
   }
 }
