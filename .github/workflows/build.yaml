@@ -65,6 +65,8 @@ jobs:
         run: npm run test
 
       - name: Publish docs
+        # TODO publish on release only
+        if: ${{ github.event_name == 'push' }}
         uses: ./.github/actions/publish-docs
         with:
           entity: default/Component/otel-nest-hello
