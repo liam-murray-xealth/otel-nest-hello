@@ -23,6 +23,13 @@ runs:
     - name: Set environment variables
       shell: bash
       run: |
+
+        # Push tag has this context:
+        #
+        # github.ref: refs/tags/v1.2.3
+        # github.head_ref: ""
+        # github.ref_name: "v1.2.3"
+        # github.ref_type: "tag"
       
         echo "GIT_BRANCH=$GIT_BRANCH" | tee -a $GITHUB_ENV
         echo "GITHUB_SHA_SHORT=${GITHUB_SHA:0:7}" | tee -a $GITHUB_ENV

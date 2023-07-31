@@ -9,12 +9,11 @@ on:
     # paths-ignore:
     #   - '**/README.md'
 
+  # release:
+  #   types: [published]
+
   pull_request:
     types: [opened, synchronize, reopened]
-
-env:
-  AWS_REGION: us-west-2
-  IAM_ROLE_PUBLISH_TECHDOCS:
 
 jobs:
   build:
@@ -64,9 +63,7 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - name: Publish docs
-        # TODO publish on release only
-        if: ${{ github.event_name == 'push' }}
+      - name: Build and publish docs
         uses: ./.github/actions/publish-docs
         with:
           entity: default/Component/otel-nest-hello

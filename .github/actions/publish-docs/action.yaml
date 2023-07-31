@@ -47,8 +47,15 @@ runs:
         aws-region: ${{ inputs.aws-region }}
         role-session-name: ${{ env.ROLE_SESSION_NAME }}
     
-    # End up on s3://BUCKET/default/component/META-NAME/index.html
+    ##
+    # Ends up on s3://BUCKET/default/component/META-NAME/index.html
+    #
+    # Publish whenever we push to the main branch since the documentation
+    # is tied to the repository and not particular releases.
+    #
     - name: Publish docs to S3
+      # if: ${{ github.event_name == 'release' }}
+      if: ${{ github.event_name == 'push' }}
       shell: bash
       run: |
         techdocs-cli publish \
