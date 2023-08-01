@@ -54,7 +54,6 @@ runs:
     # is tied to the repository and not particular releases.
     #
     - name: Publish docs to S3
-      # if: ${{ github.event_name == 'release' }}
       if: ${{ github.event_name == 'push' }}
       shell: bash
       run: |
