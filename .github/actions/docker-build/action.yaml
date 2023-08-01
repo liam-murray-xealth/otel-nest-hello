@@ -41,20 +41,17 @@ runs:
         GIT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
     #
-    # Define tags based on workflow event
+    # Tags are defined based on workflow event (tag, push, pull_request, etc.)
     #
     # push semver tag (refs/tags/v1.2.3)
     #  - v1.2.3
     #  - v1.2
-    #  - latest
-    #
-    # push non-semver tag:
-    #  - TAGNAME
+    #  - latest (unless suffix exists; v1.2.3-rc.1 will produce semver tag only)
     #
     # push:
     #  - REFNAME (everything after refs/heads, e.g. main)
     #
-    # pull request (refs/pull):
+    # pull_request (refs/pull):
     #  - pr-PRNUM (mutable latest)
     #  - pr-PRNUM-PR_SHA_SHORT (PR commit)
     #
