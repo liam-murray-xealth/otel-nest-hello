@@ -65,8 +65,9 @@ jobs:
 
       - name: Build and publish docs
         uses: ./.github/actions/publish-docs
-        with:
-          entity: default/Component/otel-nest-hello
+        # with:
+        #   entity: default/Component/otel-nest-hello
+        #   role-to-assume: ROLE
 
       - name: Build and push docker
         uses: ./.github/actions/docker-build
