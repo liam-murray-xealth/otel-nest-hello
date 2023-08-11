@@ -1,11 +1,9 @@
 # OTEL demo
 
-This project demonstrates a Nest.js service configured for traces and metrics using the [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node).
+Playground project that demonstrates
 
-It also has some useful random experimentation:git :)
-
-- posts api
-- memory leak
+- a Nest.js service configured for traces and metrics using the [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node).
+- Memory leak testing
 
 The SDK install guide (above link) tells you to install `@opentelemetry/auto-instrumentations-node`.
 
@@ -68,13 +66,11 @@ Run with insepector
 - [Instrumentation Docs](https://opentelemetry.io/docs/instrumentation/js/instrumentation/)
 - [Blog with trace examples](https://uptrace.dev/opentelemetry/js-tracing.html#quickstart)
 
-### Nest.js
-
-- [Great Nest.js REST API intro](https://www.thisdot.co/blog/introduction-to-restful-apis-with-nestjs) (source for posts service)
-
 ## Project layout
 
+```text
     mkdocs.yml    # The configuration file.
     docs/
         index.md  # The documentation homepage.
         ...       # Other markdown pages, images and other files.
+```

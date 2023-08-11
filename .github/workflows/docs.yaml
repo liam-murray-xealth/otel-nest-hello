@@ -1,0 +1,32 @@
+---
+name: Publish Docs
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mkdocs.yaml
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - docs/**
+      - mkdocs.yaml
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # TODO Add IAM role to push to S3 (without role just verifies doc build)
+      - name: Publish docs
+        uses: ./.github/actions/publish-docs
+        with:
+          iam-role: #arn:aws:iam::12345:role/github-actions/publish-techdocs-xyz

@@ -3,12 +3,12 @@ name: Publish Docs
 description: Publish documentation for Backstage
 # see https://backstage.io/docs/features/techdocs/configuring-ci-cd
 inputs:
-  role-to-assume:
+  iam-role:
     description: >-
       IAM role to assume prior to publishing.
       If not set publishing is disabled (only builds docs).
     required: false
-  aws-region: 
+  aws-region:
     description: AWS region for assume role
     default: us-west-2
     required: false
@@ -17,7 +17,9 @@ inputs:
     default: xealth-techdocs
     required: false
   entity:
-    description: Entity to publish (normally default/Component/<NAME> based on catalog-info.yaml)
+    description: >-
+      The entity to publish. This normally corresponds to the resource name for
+      the component defined in catalog-info.yaml at the root of the repository folder.
     default: default/Component/${{ github.event.repository.name }}
     required: true
 runs:
@@ -35,21 +37,28 @@ runs:
         techdocs-cli generate --no-docker
 
     - name: Generate role sesion name
-      if: ${{ inputs.role-to-assume != '' }}
       shell: bash
       run: |
-        echo "ROLE_SESSION_NAME=gha@${REPO//\//.}" | tee -a $GITHUB_ENV
+        echo "ROLE_SESSION_NAME=gha.publish@${REPO//\//.}" | tee -a $GITHUB_ENV
       env:
         REPO: ${{ github.repository }}
 
+    - name: Reset AWS creds
+      shell: bash
+      run: |
+        # https://github.com/aws-actions/configure-aws-credentials/issues/236
+        echo "AWS_ACCESS_KEY_ID=" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=" >> $GITHUB_ENV
+        echo "AWS_SESSION_TOKEN=" >> $GITHUB_ENV
+
     - name: Configure AWS credentials
-      if: ${{ inputs.role-to-assume != '' }}
+      if: ${{ inputs.iam-role != '' }}
       uses: aws-actions/configure-aws-credentials@v2
-      with: 
-        role-to-assume: ${{ inputs.role-to-assume }}
+      with:
+        role-to-assume: ${{ inputs.iam-role }}
         aws-region: ${{ inputs.aws-region }}
         role-session-name: ${{ env.ROLE_SESSION_NAME }}
-    
+
     ##
     # Ends up on s3://BUCKET/default/component/META-NAME/index.html
     #
@@ -57,11 +66,10 @@ runs:
     # is tied to the repository and not particular releases.
     #
     - name: Publish docs to S3
-      if: ${{ inputs.role-to-assume != '' && github.event_name == 'push' }}
+      if: ${{ inputs.iam-role != '' && (github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'preview')) }}
       shell: bash
       run: |
         techdocs-cli publish \
           --publisher-type awsS3 \
           --storage-name ${{ inputs.bucket-name }} \
           --entity ${{ inputs.entity }}
-

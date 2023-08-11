@@ -140,7 +140,6 @@ export async function shutdownOtel() {
   } catch (err) {
     logger.info(err, 'OTEL SDK: failed to shut down gracefully')
   }
-  process.exit(0)
 }
 
 /**
