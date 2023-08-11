@@ -119,21 +119,21 @@ export async function startOtel(ignorePaths: string[] = defaultIgnorePaths) {
   if (otelSDK) {
     throw new Error('OtelSDK already started')
   }
-  if (exitPending) {
-    throw new Error('OtelSDK exit pending')
+  if (shutdownCalled) {
+    throw new Error('OtelSDK shutdown called (restart not supported)')
   }
   otelSDK = createSdk(ignorePaths)
   await otelSDK.start()
 }
 
-let exitPending = false
+let shutdownCalled = false
 export async function shutdownOtel() {
-  if (exitPending) {
-    logger.info('shutdown pending (ignoring)')
+  if (shutdownCalled) {
+    logger.info('shutdown already called (ignoring)')
     return
   }
   logger.info('shutting down...')
-  exitPending = true
+  shutdownCalled = true
   try {
     await otelSDK.shutdown()
     logger.info('OTEL SDK: completed shutdown')
