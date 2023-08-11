@@ -4,6 +4,7 @@ Playground project that demonstrates
 
 - a Nest.js service configured for traces and metrics using the [OTEL SDK for node](https://www.npmjs.com/package/@opentelemetry/sdk-node).
 - Memory leak testing
+- Basic REST APIs with OpenAPI endpoint
 
 The SDK install guide (above link) tells you to install `@opentelemetry/auto-instrumentations-node`.
 
