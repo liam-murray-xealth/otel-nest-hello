@@ -1,5 +1,5 @@
 ---
-name: Publish Docs
+name: Site Docs
 on:
   push:
     branches:
