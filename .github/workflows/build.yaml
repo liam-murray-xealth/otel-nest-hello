@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies with audit
         run: |
           # fsevents
-          npm ci --no-optional
+          npm ci --omit=optional
           npm audit check --omit=dev --audit-level=high
           npm run lint
           npm run build
