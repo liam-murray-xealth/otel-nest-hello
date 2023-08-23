@@ -40,7 +40,7 @@
     "rxjs": "^7.8.1"
   },
   "optionalDependencies": {
-    "fsevents": "*"
+    "fsevents": "^2.3.3"
   },
   "devDependencies": {
     "@github/markdownlint-github": "^0.4.1",
