@@ -15,6 +15,7 @@ jobs:
       id-token: write
       packages: write
       contents: read
+      pull-requests: write
     steps:
       - name: Dump context for debugging
         if: ${{ true }}
@@ -51,4 +52,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           DOCKER_BUILDKIT: 1
-
+      
+      - name: Comment PR
+        if: ${{ steps.docker.outputs.digest }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Published image:
+              
+            ```json
+            ${{ steps.docker.outputs.docker-metadata }}
+            ```
