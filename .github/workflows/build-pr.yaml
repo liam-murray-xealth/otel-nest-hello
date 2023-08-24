@@ -8,7 +8,7 @@ on:
       - 'mkdocs.yaml'
 
 jobs:
-  build:
+  build-pr:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -16,7 +16,6 @@ jobs:
       packages: write
       contents: read
     steps:
-
       - name: Dump context for debugging
         if: ${{ true }}
         run: |
