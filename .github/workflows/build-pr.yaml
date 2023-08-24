@@ -1,4 +1,4 @@
-name: Build PR
+name: PR
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -8,7 +8,7 @@ on:
       - 'mkdocs.yaml'
 
 jobs:
-  build-pr:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
