@@ -1,5 +1,5 @@
 ---
-name: Build and Push 
+name: Build and Push Image 
 description: Build and Push docker images to GHCR
 inputs:
   labels: 

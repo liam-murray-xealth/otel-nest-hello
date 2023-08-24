@@ -8,6 +8,7 @@ on:
       - '**/docs'
       - 'mkdocs.yaml'
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,6 +52,9 @@ jobs:
           skip-github-release: false
           default-branch: main
 
+      # TODO: add "main" tag
+      #       add build-tag.yaml
+      #       
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v3
