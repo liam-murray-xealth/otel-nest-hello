@@ -1,4 +1,4 @@
-name: PR
+name: Build PR
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -16,10 +16,31 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: Build code
-        uses: ./.github/actions/code-build
+
+      - name: Dump context for debugging
+        if: ${{ true }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
-          debug: "false"
+          node-version: 18
+
+      - name: Install dependencies with audit
+        run: |
+          npm ci
+          npm audit check --omit=dev --audit-level=high
+          npm run lint
+          npm run build
+
+      - name: Run tests
+        run: npm run test
 
       - name: Build and push docker
         uses: ./.github/actions/docker-build

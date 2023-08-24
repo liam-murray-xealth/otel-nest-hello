@@ -1,4 +1,4 @@
-name: Build
+name: Build Main
 on:
   push:
     branches:
@@ -7,7 +7,6 @@ on:
       - '**/README.md'
       - '**/docs'
       - 'mkdocs.yaml'
-
 
 jobs:
   build:
@@ -27,19 +26,6 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
 
-      - name: Dump JWT for debugging
-        if: ${{ false }}
-        run: |
-          IDTOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com"|jq -r ".|.value")
-          # echo $IDTOKEN
-          dump() {
-              if [[ -x $(command -v jq) ]]; then
-                  jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "${1}"
-                  echo "Signature: $(echo "${1}" | awk -F'.' '{print $3}')"
-              fi
-          }
-          dump $IDTOKEN
-
       # This will possibly 
       #  a) update the pending release PR; or 
       #  b) (if this commit is from merging the pending release PR) create a release tag and release 
@@ -51,10 +37,7 @@ jobs:
           package-name: release-please-action
           skip-github-release: false
           default-branch: main
-
-      # TODO: add "main" tag
-      #       add build-tag.yaml
-      #       
+    
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v3
@@ -88,5 +71,7 @@ jobs:
             org.opencontainers.image.description=Nest.Js with OTEL and other random experimentation
           github-token: ${{ secrets.GITHUB_TOKEN }}
           context: ${{ steps.release.outputs.release_created && 'git' || 'workflow' }}
+          # Add ref name when git context (from tag ref) is used
+          raw-tags: ${{ steps.release.outputs.release_created && github.ref_name || '' }}
         env:
           DOCKER_BUILDKIT: 1
