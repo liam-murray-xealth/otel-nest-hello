@@ -64,6 +64,7 @@ jobs:
         run: npm run test
 
       - name: Build and push docker
+        id: docker
         uses: ./.github/actions/docker-build
         with:
           labels: |
@@ -71,7 +72,26 @@ jobs:
             org.opencontainers.image.description=Nest.Js with OTEL and other random experimentation
           github-token: ${{ secrets.GITHUB_TOKEN }}
           context: ${{ steps.release.outputs.release_created && 'git' || 'workflow' }}
-          # Add ref name when git context (from tag ref) is used
+          # Add workflow ref name (e.g. main) so name (main) is included in image tags
           raw-tags: ${{ steps.release.outputs.release_created && github.ref_name || '' }}
         env:
           DOCKER_BUILDKIT: 1
+
+      - name: Update release
+        if: ${{ steps.release.outputs.tag_name }}
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+        with:
+          body: |
+            ## Image
+             pushed: ${{ steps.docker.outputs.pushed }}
+            
+             digest: ${{ steps.docker.outputs.image-digest }}
+             id: ${{ steps.docker.outputs.image-id }}
+
+             tags: ${{ steps.docker.outputs.tags }}
+            
+            -

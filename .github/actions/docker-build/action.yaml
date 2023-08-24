@@ -17,13 +17,29 @@ inputs:
     default: docker/Dockerfile
     required: false
   context:
-    description: Context for metadata-action (mainly for overriding ref/sha)
+    description: >-
+      Context for metadata-action (mainly for overriding ref/sha). Set to "git" when code is checked out from
+      a ref (e.g. tag created during workflow) that is different than the ref that triggered the workflow. 
+      That ensures the sem-ver image tags are included when tagging the docker image.
     default: workflow
     required: false
   raw-tags:
     description: Extra raw tags (space delimited)
     default: ''
     required: false
+outputs:
+  tags:
+    description: "Image Tags"
+    value: ${{ steps.meta.outputs.tags }}
+  image-id:
+    description: "Image ID"
+    value: ${{ steps.build-push.outputs.imageid }}
+  image-digest:
+    description: "Image digest"
+    value: ${{ steps.build-push.outputs.digest }}
+  image-pushed:
+    description: "Image pushed?"
+    value: ${{ steps.build-push.inputs.push }}
 
 runs:
   using: composite
@@ -103,6 +119,7 @@ runs:
         password: ${{ inputs.github-token }}
 
     - name: Build and push
+      id: build-push
       uses: docker/build-push-action@v4
       with:
         # docker image build . --file docker/Dockerfile
@@ -115,5 +132,12 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
+    - name: Show build and push meta
+      shell: bash
+      run: |
+        echo -e "tags:\n${{ steps.build-push.outputs.imageid }}"
+        echo -e "labels:\n${{ steps.build-push.outputs.digest }}"
+        echo -e "metadata:\n${{ steps.build-push.outputs.metadata }}"
 
-    
+
+   
