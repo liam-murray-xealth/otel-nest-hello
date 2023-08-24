@@ -58,7 +58,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            A docker image was pushed.
+            Published image:
               
             ```json
             ${{ steps.docker.outputs.docker-metadata }}
