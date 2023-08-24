@@ -142,7 +142,7 @@ runs:
       run: |
         echo "$OUTPUTS"
       env:
-        OUTPUTS: ${{ toJson(steps.build_push.outputs) }}
+        OUTPUTS: ${{ toJson(steps.build_push) }}
 
     - name: Show build and push meta
       shell: bash
