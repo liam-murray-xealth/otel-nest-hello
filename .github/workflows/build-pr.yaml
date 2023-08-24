@@ -51,3 +51,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           DOCKER_BUILDKIT: 1
+
+      - name: Dump outputs for debugging
+        if: ${{ true }}
+        run: |
+          echo "$OUTPUTS"
+        env:
+          OUTPUTS: ${{ toJson(steps.docker.outputs) }}
