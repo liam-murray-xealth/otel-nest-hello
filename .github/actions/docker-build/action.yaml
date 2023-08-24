@@ -138,6 +138,7 @@ runs:
 
     - name: Dump outputs for debugging
       if: ${{ true }}
+      shell: bash
       run: |
         echo "$OUTPUTS"
       env:
