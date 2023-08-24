@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.5...v1.0.6) (2023-08-24)
+
+
+### Bug Fixes
+
+* tweak docker info in release ([c55c90d](https://github.com/liam-murray-xealth/otel-nest-hello/commit/c55c90dc50ccc7c13a26086cab90b60ce9dd18e6))
+
 ## [1.0.5](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.4...v1.0.5) (2023-08-24)
 
 
