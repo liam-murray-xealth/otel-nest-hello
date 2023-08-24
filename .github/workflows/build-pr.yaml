@@ -15,6 +15,7 @@ jobs:
       id-token: write
       packages: write
       contents: read
+      pull-requests: write
     steps:
       - name: Dump context for debugging
         if: ${{ true }}
