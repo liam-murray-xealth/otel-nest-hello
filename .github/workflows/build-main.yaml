@@ -88,9 +88,11 @@ jobs:
         with:
           is_append_body: true
           body: |
-            ## Docker Metadata
-
-            ${{ steps.docker.outputs.metadata }}
+            ### Docker Images Published
+            
+            ```json
+            ${{ steps.docker.outputs.docker-metadata }}
+            ```
             
             
             
