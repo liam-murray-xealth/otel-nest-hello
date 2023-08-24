@@ -1,5 +1,5 @@
 ---
-name: Build and Push 
+name: Build and Push Image 
 description: Build and Push docker images to GHCR
 inputs:
   labels: 
@@ -19,6 +19,10 @@ inputs:
   context:
     description: Context for metadata-action (mainly for overriding ref/sha)
     default: workflow
+    required: false
+  raw_tags:
+    description: Extra raw tags (space delimited)
+    default: ''
     required: false
 
 runs:
@@ -77,6 +81,7 @@ runs:
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
           type=sha,format=short,prefix=sha-
+          ${{ inputs.raw-tags }}
 
     - name: Show docker meta
       shell: bash
