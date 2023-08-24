@@ -1,15 +1,5 @@
-name: Build
+name: PR
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - '**'
-    paths-ignore:
-      - '**/README.md'
-      - '**/docs'
-      - 'mkdocs.yaml'
-
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -19,7 +9,6 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
