@@ -1,4 +1,4 @@
-name: Build Main
+name: Main
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
       - 'mkdocs.yaml'
 
 jobs:
-  build-main:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

@@ -20,7 +20,7 @@ inputs:
     description: Context for metadata-action (mainly for overriding ref/sha)
     default: workflow
     required: false
-  raw_tags:
+  raw-tags:
     description: Extra raw tags (space delimited)
     default: ''
     required: false
