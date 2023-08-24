@@ -16,6 +16,10 @@ inputs:
     description: Dockerfile path
     default: docker/Dockerfile
     required: false
+  context:
+    description: Context for metadata-action (mainly for overriding ref/sha)
+    default: workflow
+    required: false
 
 runs:
   using: composite
@@ -62,6 +66,7 @@ runs:
       id: meta
       uses: docker/metadata-action@v4
       with:
+        context: ${{ inputs.context }}
         images: |
           ${{ env.GHCR_IMAGE }}
         labels: ${{ inputs.labels }}
