@@ -56,7 +56,7 @@ jobs:
         with:
           ref: ${{ steps.release.outputs.tag_name }}
 
-      - name: Checkout code
+      - name: Checkout code from workflow
         if: ${{ ! steps.release.outputs.release_created }}
         uses: actions/checkout@v3
 
