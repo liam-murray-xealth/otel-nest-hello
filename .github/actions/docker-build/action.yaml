@@ -31,13 +31,13 @@ outputs:
   tags:
     description: "Image Tags"
     value: ${{ steps.meta.outputs.tags }}
-  image-id:
+  imageid:
     description: "Image ID"
     value: ${{ steps.build-push.outputs.imageid }}
-  image-digest:
+  digest:
     description: "Image digest"
     value: ${{ steps.build-push.outputs.digest }}
-  image-pushed:
+  pushed:
     description: "Image pushed?"
     value: ${{ steps.build-push.inputs.push }}
 
@@ -135,8 +135,8 @@ runs:
     - name: Show build and push meta
       shell: bash
       run: |
-        echo -e "tags:\n${{ steps.build-push.outputs.imageid }}"
-        echo -e "labels:\n${{ steps.build-push.outputs.digest }}"
+        echo -e "image id:\n${{ steps.build-push.outputs.imageid }}"
+        echo -e "image digest:\n${{ steps.build-push.outputs.digest }}"
         echo -e "metadata:\n${{ steps.build-push.outputs.metadata }}"
 
 

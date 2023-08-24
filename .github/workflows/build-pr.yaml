@@ -42,6 +42,7 @@ jobs:
         run: npm run test
 
       - name: Build and push docker
+        id: docker
         uses: ./.github/actions/docker-build
         with:
           labels: |
