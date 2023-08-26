@@ -1,13 +1,16 @@
 ### ❓ Type of change
 
 <!-- What types of changes does your code introduce? -->
+<!-- If a commit mixes types, use the most important type label in the commit message. -->
+<!-- The priority is generally: feat, fix, docs, test, ci, refactor, chore. -->
 
-- [ ] 📖 Documentation
+- [ ] ✨ Feature
 - [ ] 🐞 Bug fix
-- [ ] 👌 Enhancement
-- [ ] ✨ New feature
-- [ ] 🧹 Chore (updates to the build process or tools and libraries)
-- [ ] ⚠️ Breaking change (fix or feature that would cause existing functionality to change)
+- [ ] 📖 Documentation
+- [ ] 💯 Test
+- [ ] 🎬 CI or Build
+- [ ] 👌 Refactor or enhancement
+- [ ] 🧹 Chore
 
 ### 📚 Description
 
