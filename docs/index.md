@@ -6,6 +6,7 @@ Playground project that demonstrates the following:
 - Memory leak testing
 - Basic REST APIs with OpenAPI endpoint
 - GitHub action workflow to build Backstage techdocs
+- Use of [release-please-action](https://github.com/google-github-actions/release-please-action]) for releases
 
 The SDK install guide (above link) tells you to install `@opentelemetry/auto-instrumentations-node`.
 
