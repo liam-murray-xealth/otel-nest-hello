@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.6...v1.0.7) (2023-08-26)
+
+
+### Bug Fixes
+
+* gha add pr comment ([#21](https://github.com/liam-murray-xealth/otel-nest-hello/issues/21)) ([cc9ca89](https://github.com/liam-murray-xealth/otel-nest-hello/commit/cc9ca89a98cf657a3f41b4e809d396e5c997f791))
+
 ## [1.0.6](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.5...v1.0.6) (2023-08-24)
 
 
