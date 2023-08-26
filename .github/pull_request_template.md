@@ -1,3 +1,7 @@
+### Issue
+
+<!-- Link to issue  -->
+
 ### ❓ Type of change
 
 <!-- What types of changes does your code introduce? -->
@@ -16,10 +20,3 @@
 
 <!-- Describe your changes in detail -->
 <!-- Why is this change required? What problem does it solve? -->
-
-### 📝 Checklist
-
-<!-- Put an `x` in all the boxes that apply. -->
-
-- [ ] I have updated the documentation
-- [ ] I have updated tests
