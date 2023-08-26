@@ -1,9 +1,9 @@
 ### Summary 💡
 
-<!-- One line summary along with ticket or issue  -->
+<!-- Short summary along with ticket or issue  -->
 
-### Description 📚
+### Description
 
-<!-- Details of changes -->
+<!-- Details of changes as appropriate -->
 
 N/A
