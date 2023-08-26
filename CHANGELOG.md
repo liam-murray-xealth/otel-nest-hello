@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.8](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.7...v1.0.8) (2023-08-26)
+
+
+### Bug Fixes
+
+* add image info to release  ([09413b8](https://github.com/liam-murray-xealth/otel-nest-hello/commit/09413b839d2791b29fb787b7cedf776d0b58f352))
+* Change comment ([#4](https://github.com/liam-murray-xealth/otel-nest-hello/issues/4)) ([442a122](https://github.com/liam-murray-xealth/otel-nest-hello/commit/442a1229808cf2fc16760981ec4b224159cf4191))
+* fsevents badversion ([85501ac](https://github.com/liam-murray-xealth/otel-nest-hello/commit/85501ac10e68008a840138c16ff0bb44faf9977f))
+
+
 ## [1.0.7](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.6...v1.0.7) (2023-08-26)
 
 
