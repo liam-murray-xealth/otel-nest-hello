@@ -1,7 +1,7 @@
-### Issue
+### Summary
 
-<!-- What ticket or issue does this address?  -->
+<!-- One line summary along with ticket or issue  -->
 
 ### 📚 Description
 
-<!-- Why is this change required? What problem does it solve? -->
+<!-- Details of changes -->
