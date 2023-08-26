@@ -26,9 +26,9 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
 
-      # This will possibly 
-      #  a) update the pending release PR; or 
-      #  b) (if this commit is from merging the pending release PR) create a release tag and release 
+      # This will possibly
+      #  a) update the pending release PR; or
+      #  b) (if this commit is from merging the pending release PR) create a release tag and release
       #
       - uses: google-github-actions/release-please-action@v3
         id: release
@@ -37,7 +37,7 @@ jobs:
           package-name: release-please-action
           skip-github-release: false
           default-branch: main
-    
+
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v3
@@ -77,7 +77,6 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
 
-          
       - name: Update release
         if: ${{ steps.release.outputs.tag_name }}
         id: update_release
@@ -88,12 +87,8 @@ jobs:
         with:
           is_append_body: true
           body: |
-            ### Docker Images
-            
+            ### Container Images
+
             ```json
             ${{ steps.docker.outputs.docker-metadata }}
             ```
-            
-            
-            
-            
