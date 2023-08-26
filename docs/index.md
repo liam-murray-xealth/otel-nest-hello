@@ -132,13 +132,6 @@ gh release list
 gh release view v1.0.0
 ```
 
-Delete a release;
-
-```bash
-gh release delete v1.0.7
-git push --delete origin v1.0.7
-```
-
 ## References
 
 ### OpenTelemetry Tracing
