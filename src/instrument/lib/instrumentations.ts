@@ -1,5 +1,6 @@
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
-import { IncomingMessage } from 'http'
+import { IncomingMessage, ClientRequest } from 'http'
+import { Span } from '@opentelemetry/api'
 
 let ignorePaths: string[] = []
 
@@ -60,5 +61,10 @@ export const nodeInstrumentations = getNodeAutoInstrumentations({
       // logger.debug({ method, url }, 'RequestHook: not ignoring')
       return false
     },
+    // requestHook: (span: Span, request: IncomingMessage | ClientRequest) {
+    //    if (request instanceof ClientRequest) {
+    //     const cr = request as ClientRequest
+    //    }
+    // }
   },
 })
