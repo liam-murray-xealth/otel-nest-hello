@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.8...v1.0.9) (2023-09-12)
+
+
+### Bug Fixes
+
+* add outbound axios call for testing ([#29](https://github.com/liam-murray-xealth/otel-nest-hello/issues/29)) ([056fdc8](https://github.com/liam-murray-xealth/otel-nest-hello/commit/056fdc82ad356d1813f67fdebd6684909b3ee2e3))
+
 ## [1.0.8](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.7...v1.0.8) (2023-08-26)
 
 
