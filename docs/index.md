@@ -64,6 +64,12 @@ Generate new REST API
 npx @nestjs/cli@latest generate resource memoryleak
 ```
 
+Update packages
+
+```bash
+npx npm-check-updates -i
+```
+
 ## Memory leak
 
 Run with insepector
