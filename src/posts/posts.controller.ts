@@ -42,7 +42,7 @@ export class PostsController {
   @Post()
   @ApiCreatedResponse({ description: 'Post created successfully.' })
   @ApiUnprocessableEntityResponse({ description: 'Post title already exists.' })
-  public create(@Body() post: PostModel): PostModel {
+  public create(@Body() post: PostModel): Promise<PostModel> {
     return this.postsService.create(post)
   }
 

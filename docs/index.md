@@ -46,12 +46,28 @@ Next steps:
 - Build and test docker image: [docker build readme](./docker/README.md)
 - Deploy to kubernetes: [Kubernetes deploy readme](./kubernetes/otel-hello/README.md)
 
+## Testing notes
+
+1. Seeing traces/metrics for outbound calls
+
+The `POST /posts` will call out to a remote API (cat facts) if you set the body to an empty string
+
+1. Prometheus HTTP metrics
+
+To enable http instrumentation prometheus metrics comment out `views.push` where we add DropAggregation.
+
 ## Nest.js
 
 Generate new REST API
 
 ```bash
 npx @nestjs/cli@latest generate resource memoryleak
+```
+
+Update packages
+
+```bash
+npx npm-check-updates -i
 ```
 
 ## Memory leak
@@ -72,7 +88,7 @@ Sometimes you may want to correct/modify conventional commit messages.
 - You may want to change feat vs fix to influence the next proposed version
 - You forgot to merge a PR with a conventional commit message (so release-please ignores it)
 
-Ensuring the PR title conforms to conventional-commit syntax is the best line of defense (see the GHA workflows).
+Ensuring the PR title conforms to conventional-commit syntax is the best line of defense (see the GHA workflows). We have a lint-pr workflow to ensure the PR has a conventional-commit title.
 
 #### Solution for unprotected main branch
 

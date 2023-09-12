@@ -76,15 +76,21 @@ function createSdk(ignorePaths: string[]) {
     logger.info(`Prometheus metrics: http://localhost:${port}${endpoint}`)
   })
 
+  const views: View[] = []
+  // HTTP prom metrics are not very useful
+  //  - http_route in http_server_duration_bucket can have high cardinality (no regex or conversion)
+  //  - http_client_duration_bucket does not provide route-level label (path)
   // https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/metrics.md
-  const dropHttpMetricsView = new View({
-    aggregation: new DropAggregation(),
-    meterName: '@opentelemetry/instrumentation-http',
-  })
+  views.push(
+    new View({
+      aggregation: new DropAggregation(),
+      meterName: '@opentelemetry/instrumentation-http',
+    })
+  )
 
   const sdk = new NodeSDK({
     metricReader: prometheusExporter,
-    views: [dropHttpMetricsView],
+    views,
     //spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
     spanProcessor: new BatchSpanProcessor(
       new OTLPTraceExporter({

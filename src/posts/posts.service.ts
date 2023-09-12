@@ -1,11 +1,19 @@
 import { Injectable, NotFoundException, UnprocessableEntityException, Logger } from '@nestjs/common'
 import { PostModel } from './posts.interface'
+import { HttpModule, HttpService } from '@nestjs/axios'
+import { firstValueFrom } from 'rxjs'
+
+export type CatFact = {
+  fact: string
+  length: number
+}
 
 @Injectable()
 export class PostsService {
-  private posts: PostModel[]
+  private posts: PostModel[] = []
   private readonly logger = new Logger(PostsService.name)
 
+  constructor(private readonly httpService: HttpService) {}
   public findAll(): Array<PostModel> {
     return this.posts
   }
@@ -19,11 +27,28 @@ export class PostsService {
     return post
   }
 
-  public create(post: PostModel): PostModel {
+  public async getCatFact(): Promise<CatFact> {
+    // https://apipheny.io/free-api/
+    // https://catfact.ninja/
+    const fact = 'https://catfact.ninja/fact'
+    const resp = await firstValueFrom(this.httpService.get<CatFact>(fact))
+    return resp.data
+  }
+
+  public async create(post: PostModel): Promise<PostModel> {
     // if the title is already in use by another post
     const titleExists = this.posts.some(item => item.title === post.title)
     if (titleExists) {
       throw new UnprocessableEntityException('Post title already exists.')
+    }
+
+    if (!post.body.length) {
+      const fact = await this.getCatFact()
+      post = {
+        ...post,
+        body: fact.fact,
+        category: 'cat_fact',
+      }
     }
 
     // find the next id for a new blog post
