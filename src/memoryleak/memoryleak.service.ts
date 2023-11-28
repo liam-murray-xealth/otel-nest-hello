@@ -4,7 +4,9 @@ import { CreateTimerleakDto } from './dto/create-timerleak.dto'
 // https://betterstack.com/community/guides/scaling-nodejs/high-performance-nodejs/nodejs-memory-leaks/#2-closures
 
 // global data
-const data: string[] = []
+const strings: string[] = []
+
+const numbers: number[][] = []
 
 type Getter = () => number
 function createGetter(elementCount: number) {
@@ -79,6 +81,17 @@ export class MemoryleakService {
     }
   }
 
+  createNumberArray(size: number) {
+    const a = new Array<number>(size)
+    for (let idx = 0; idx < size; ++idx) {
+      a[idx] = idx
+    }
+    numbers.push(a)
+    return {
+      size,
+    }
+  }
+
   createSmallstringLeak() {
     const generateRandomString = () => {
       // crypto.randomBytes(20).toString('hex');
@@ -91,7 +104,7 @@ export class MemoryleakService {
       return out
     }
     for (let idx = 0; idx < 1000; ++idx) {
-      data.push(generateRandomString())
+      strings.push(generateRandomString())
     }
   }
 

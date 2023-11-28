@@ -23,7 +23,7 @@ jobs:
           echo "$GITHUB_CONTEXT"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -52,14 +52,33 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           DOCKER_BUILDKIT: 1
-      
+
+      - name: Parse Meta
+        id: parse-meta
+        run: |
+          IMAGE_LIST=$(jq -r '.["image.name"]' <<< '${{ steps.docker.outputs.docker-metadata }}' | tr ',' '\n')
+          #echo "images='\"$IMAGE_LIST\"'" >> "$GITHUB_OUTPUT"
+          {
+            echo 'images<<EOF'
+            echo "$IMAGE_LIST"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
       - name: Comment PR
         if: ${{ steps.docker.outputs.digest }}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
         with:
+          # hide_and_recreate: true
+          # hide_classify: 'OUTDATED'
           message: |
-            Published image:
-              
+            Image tags published from ${{ github.workflow }}/${{ github.run_number }} at ${{ github.event.pull_request.updated_at }}
+             
+            ```text
+            ${{ steps.parse-meta.outputs.images }}
+            ```
+
+            Metadata:
+
             ```json
             ${{ steps.docker.outputs.docker-metadata }}
             ```
