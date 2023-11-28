@@ -81,12 +81,12 @@ function createSdk(ignorePaths: string[]) {
   //  - http_route in http_server_duration_bucket can have high cardinality (no regex or conversion)
   //  - http_client_duration_bucket does not provide route-level label (path)
   // https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/metrics.md
-  views.push(
-    new View({
-      aggregation: new DropAggregation(),
-      meterName: '@opentelemetry/instrumentation-http',
-    })
-  )
+  // views.push(
+  //   new View({
+  //     aggregation: new DropAggregation(),
+  //     meterName: '@opentelemetry/instrumentation-http',
+  //   })
+  // )
 
   const sdk = new NodeSDK({
     metricReader: prometheusExporter,

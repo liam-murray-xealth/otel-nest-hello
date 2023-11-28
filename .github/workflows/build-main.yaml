@@ -77,17 +77,34 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
 
+      - name: Parse Meta
+        id: parse-meta
+        run: |
+          IMAGE_LIST=$(jq -r '.["image.name"]' <<< '${{ steps.docker.outputs.docker-metadata }}' | tr ',' '\n')
+          {
+            echo 'images<<EOF'
+            echo "$IMAGE_LIST"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
       - name: Update release
         if: ${{ steps.release.outputs.tag_name }}
         id: update_release
-        uses: tubone24/update_release@v1.3.1
+        uses: tubone24/update_release@c04c17054b939144ec8a7cba969d74992f812d66 # v1.3.1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
           TAG_NAME: ${{ steps.release.outputs.tag_name }}
         with:
           is_append_body: true
           body: |
+
             ### Container Images
+
+             ```text
+            ${{ steps.parse-meta.outputs.images }}
+            ```
+
+            Metadata:
 
             ```json
             ${{ steps.docker.outputs.docker-metadata }}
