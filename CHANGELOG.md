@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.12](https://github.com/liam-murray-xealth/otel-nest-hello/compare/otel-hello-v1.0.11...otel-hello-v1.0.12) (2023-12-05)
+
+
+### Miscellaneous
+
+* **docs:** add techdocs-mkdocs ([#40](https://github.com/liam-murray-xealth/otel-nest-hello/issues/40)) ([0d9b2d5](https://github.com/liam-murray-xealth/otel-nest-hello/commit/0d9b2d51a1c66dba7adebd4ed1e9895ad141204f))
+
 ## [1.0.11](https://github.com/liam-murray-xealth/otel-nest-hello/compare/otel-hello-v1.0.10...otel-hello-v1.0.11) (2023-12-05)
 
 This was hand edited (experiment) as part of upgrade to v4 release-please action
