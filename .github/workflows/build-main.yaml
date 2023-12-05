@@ -30,13 +30,10 @@ jobs:
       #  a) update the pending release PR; or
       #  b) (if this commit is from merging the pending release PR) create a release tag and release
       #
-      - uses: google-github-actions/release-please-action@v3
+      - uses: google-github-actions/release-please-action@a6d1fd9854c8c40688a72f7e4b072a1e965860a0 # v4.0.0
         id: release
         with:
-          release-type: node
-          package-name: release-please-action
-          skip-github-release: false
-          default-branch: main
+          target-branch: main
 
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
