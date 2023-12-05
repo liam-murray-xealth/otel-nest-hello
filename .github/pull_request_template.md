@@ -1,9 +1,7 @@
-### Summary 💡
+<!-- https://github.com/googleapis/release-please#how-should-i-write-my-commits -->
 
-<!-- Short summary along with ticket or issue  -->
+<!-- feat (bumps min), fix (bumps patch), chore (no bump) (other types are hidden in changelog--see changelog-types) -->
 
-### Description
+### Summary
 
-<!-- Details of changes as appropriate -->
-
-N/A
+### Details
