@@ -1,1 +1,15 @@
 site_name: Otel Nest Hello Docs
+
+plugins:
+  - techdocs-core
+
+# --8<-- [start:mysnip]
+markdown_extensions:
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+extra_css:
+  - stylesheets/admonitions.css
+# --8<-- [end:mysnip]
