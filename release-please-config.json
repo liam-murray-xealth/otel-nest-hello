@@ -4,6 +4,7 @@
       "changelog-path": "CHANGELOG.md",
       "bootstrap-sha": "f6c8d59569a4cc4a282a748bc8ef9ecb0865d541",
       "last-release-sha": "f6c8d59569a4cc4a282a748bc8ef9ecb0865d541",
+      "package-name": "release-please-action",
       "release-type": "node",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
