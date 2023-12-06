@@ -82,17 +82,37 @@ Run with insepector
 
 ## Release please
 
-### Fix conventional commit
+### Configuration
 
-Sometimes you may want to correct/modify conventional commit messages.
+This describes config in `release-please-config.json`
 
-- They show up in release notes so you may want to improve the message
-- You may want to change feat vs fix to influence the next proposed version
-- You forgot to merge a PR with a conventional commit message (so release-please ignores it)
+#### include-component-in-tag
 
-Ensuring the PR title conforms to conventional-commit syntax is the best line of defense (see the GHA workflows). We have a lint-pr workflow to ensure the PR has a conventional-commit title.
+We disable the component name (e.g., from package.json) which looks like this `refs/tags/<PACKAGENAME>-v1.0.12`
 
-#### Solution for unprotected main branch
+That interferes with the docker meta action when it parses the semver.
+
+```text
+Warning: hello-v1.0.12 is not a valid semver
+```
+
+#### include-v-in-tag
+
+Set true so tags look like
+
+```text
+refs/tags/v1.0.10
+```
+
+### Fix conventional commit or changelog
+
+Sometimes you may want to correct/modify release notes.
+
+#### Option 1: Touchup prior to merging release PR
+
+You can edit the release PR description and changelog before approving and merging it.
+
+#### Option 2: Solution for unprotected main branch
 
 This works only if the main branch is unprotected because it requires re-writing commits to the main branch.
 
