@@ -33,8 +33,24 @@ jobs:
       - uses: google-github-actions/release-please-action@a6d1fd9854c8c40688a72f7e4b072a1e965860a0 # v4.0.0
         id: release
         with:
+          # We disable the component name (e.g., from package.json) which looks like this:
+          #   refs/tags/<PACKAGENAME>-v1.0.12
+          # That interferes with docker meta action when it parses the semver.
+          #   Warning: hello-v1.0.12 is not a valid semver
+          #
+          include-component-in-tag: false
           target-branch: main
 
+      - name: Dump output from release-please for debugging
+        if: ${{ true }}
+        run: |
+          echo "$RELEASE_PLEASE_OUTPUT"
+        env:
+          RELEASE_PLEASE_OUTPUT: ${{ toJson(steps.release.outputs) }}
+
+      # Check out the tag ref "refs/tags/v1.2.3" if a release tag was just created.
+      # Later docker meta will derive image tags from that.
+      #
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v3

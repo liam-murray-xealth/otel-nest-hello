@@ -73,31 +73,39 @@ runs:
         GIT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
     #
-    # Tags are defined based on workflow event (tag, push, pull_request, etc.)
+    # Generated image tags are defined based on the workflow 
+    # event (tag, push, pull_request, etc.)
     #
-    # push semver tag (refs/tags/v1.2.3)
+    # push tag matching semver pattern (refs/tags/v1.2.3)
     #  - v1.2.3
     #  - v1.2
     #  - latest (unless suffix exists; v1.2.3-rc.1 will produce semver tag only)
     #
     # push:
     #  - REFNAME (everything after refs/heads, e.g. main)
-    #
+    # 
     # pull_request (refs/pull):
     #  - pr-PRNUM (mutable latest)
     #  - pr-PRNUM-PR_SHA_SHORT (PR commit)
     #
-    # all:
+    # all
     #  - sha-BUILD_SHA_SHORT (commit that triggered workflow and used for build)
     #
+    # Note for release-please on merge release PR:
+    #  We check out the tag so the ref looks like "refs/tags/v1.2.3".
+    #  That makes docker meta action apply "push tag" logic even though technically 
+    #  a tag was not pushed.
+    #  
     - name: Docker meta
       id: meta
-      uses: docker/metadata-action@v4
+      uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4.6.0
       with:
         context: ${{ inputs.context }}
         images: |
           ${{ env.GHCR_IMAGE }}
         labels: ${{ inputs.labels }}
+        flavor: |
+          latest=auto
         tags: |
           type=ref,event=branch
           type=ref,event=pr
