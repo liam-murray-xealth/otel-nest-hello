@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.13](https://github.com/liam-murray-xealth/otel-nest-hello/compare/otel-hello-v1.0.12...otel-hello-v1.0.13) (2023-12-06)
+
+
+### Miscellaneous
+
+* Disable component name in release please tags (interferes with docker meta semver parsing) ([c36e955](https://github.com/liam-murray-xealth/otel-nest-hello/commit/c36e955f6a9b7c3f4125012f6eb5ca87ce6f39a0))
+* remove comment ([#43](https://github.com/liam-murray-xealth/otel-nest-hello/issues/43)) ([a158856](https://github.com/liam-murray-xealth/otel-nest-hello/commit/a1588568f22b23a7d4762393b6ba164ad4f2f0ed))
+
 ## [1.0.12](https://github.com/liam-murray-xealth/otel-nest-hello/compare/otel-hello-v1.0.11...otel-hello-v1.0.12) (2023-12-05)
 
 
