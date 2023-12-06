@@ -69,6 +69,7 @@ class Timeouts {
 export class MemoryleakService {
   private getters: Getter[] = []
 
+  // Store leak
   private timeouts = new Timeouts()
 
   // create(createMemoryleakDto: CreateMemoryleakDto) {
