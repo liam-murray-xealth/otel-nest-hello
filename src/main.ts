@@ -7,7 +7,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { Logger } from '@nestjs/common'
 import { LoggingInterceptor } from './interceptors/logging.interceptor'
 import { runSpan } from './instrument'
-//
+
 /**
  * Setups up /api endoint to provide Swagger
  */
