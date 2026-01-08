@@ -13,7 +13,7 @@ export class PostsService {
   private posts: PostModel[] = []
   private readonly logger = new Logger(PostsService.name)
 
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) { }
   public findAll(): Array<PostModel> {
     return this.posts
   }
@@ -52,7 +52,7 @@ export class PostsService {
     }
 
     // find the next id for a new blog post
-    const maxId: number = Math.max(...this.posts.map(post => post.id || -1))
+    const maxId: number = this.posts.length > 0 ? Math.max(...this.posts.map(post => post.id || 0)) : -1
     const id: number = maxId + 1
 
     const blogPost: PostModel = {
