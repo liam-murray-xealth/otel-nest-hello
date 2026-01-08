@@ -14,22 +14,22 @@ When pinning GitHub Actions to a specific SHA (for security and reliability), do
     Decide which version tag you want to target (e.g., `v4`, `v4.2.0`).
 
 3.  **Fetch Tags and SHAs**
-    Use `git ls-remote` to list tags and filter for your version. This ensures you see the actual commit hash the tag points to.
+    Use `git ls-remote` combined with `sort -V` to list tags in semantic order. This ensures you can easily identify the absolutely latest version.
 
     ```bash
-    git ls-remote --tags https://github.com/<owner>/<repo>.git | grep <version>
+    git ls-remote --tags --refs https://github.com/<owner>/<repo>.git | grep -v "\^{}" | sort -t '/' -k 3 -V | tail -n 5
     ```
 
     *Example:*
     ```bash
-    # To find the SHA for actions/checkout v4
-    git ls-remote --tags https://github.com/actions/checkout.git | grep "refs/tags/v4"
+    # To find the latest SHA for actions/checkout v4
+    git ls-remote --tags --refs https://github.com/actions/checkout.git | grep "refs/tags/v4" | sort -t '/' -k 3 -V | tail -n 5
     ```
 
 4.  **Select the SHA**
-    *   Look for the specific tag you want (e.g., `refs/tags/v4.2.0`).
-    *   Copy the full 40-character SHA hash.
-    *   **Verify**: If there are multiple entries (e.g., one for the lightweight tag and one for the dereferenced object `^{}`), pick the commit SHA. Usually, the first one is sufficient, but ensure it looks like a commit hash.
+    *   **Always pick the LAST item** in the sorted list (the highest version number).
+    *   The output format is `<SHA> <REF>`. Copy the 40-character SHA.
+    *   *Note*: The command above uses `--refs` to avoid duplicate entries for dereferenced tags.
 
 5.  **Pin in Workflow**
     Use the format: `uses: owner/repo@<SHA> # <tag>`
