@@ -24,7 +24,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336685517e6cfd504afff5fb2967f # v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       # TODO Add IAM role to push to S3 (without role just verifies doc build)
       - name: Publish docs
