@@ -69,14 +69,14 @@ describe('PostsService', () => {
 
     it('should fetch cat fact if body is empty', async () => {
       // We'd ideally mock HttpService here but for now relying on the real one or assuming it won't fail
-      // If we want to be strict unit test we should mock HttpService. 
+      // If we want to be strict unit test we should mock HttpService.
       // Given the existing test was using real HttpModule, I'll stick to that but beware of network.
-      // Actually, let's keep it simple and not test the external API call in this strict unit test to avoid flakes, 
+      // Actually, let's keep it simple and not test the external API call in this strict unit test to avoid flakes,
       // unless we mock it. For now I'll skip the empty body test or just assume it works if network is up.
       // Let's test the logic branch:
       // If we don't mock, this test depends on external API.
       // I will skip specific cat fact verification to avoid network dependency flakiness in this run,
-      // covering core logic instead. 
+      // covering core logic instead.
     })
   })
 
@@ -114,7 +114,7 @@ describe('PostsService', () => {
     })
 
     it('should throw NotFoundException if not found', () => {
-      expect(() => service.update(999, {} as any)).toThrow(NotFoundException)
+      expect(() => service.update(999, {} as PostModel)).toThrow(NotFoundException)
     })
   })
 
