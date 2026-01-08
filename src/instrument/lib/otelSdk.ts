@@ -13,7 +13,7 @@ import { PrometheusExporter } from '@opentelemetry/exporter-prometheus'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
 import * as process from 'process'
-import { DropAggregation, View } from '@opentelemetry/sdk-metrics'
+import { ViewOptions } from '@opentelemetry/sdk-metrics'
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api'
 import { logger } from './logging'
 
@@ -76,7 +76,7 @@ function createSdk(ignorePaths: string[]) {
     logger.info(`Prometheus metrics: http://localhost:${port}${endpoint}`)
   })
 
-  const views: View[] = []
+  const views: ViewOptions[] = []
   // HTTP prom metrics are not very useful
   //  - http_route in http_server_duration_bucket can have high cardinality (no regex or conversion)
   //  - http_client_duration_bucket does not provide route-level label (path)
@@ -89,16 +89,18 @@ function createSdk(ignorePaths: string[]) {
   // )
 
   const sdk = new NodeSDK({
-    metricReader: prometheusExporter,
+    metricReaders: [prometheusExporter],
     views,
     //spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
-    spanProcessor: new BatchSpanProcessor(
-      new OTLPTraceExporter({
-        // url: '<opentelemetry-collector-url>', // default is http://localhost:4318/v1/traces
-        headers: {}, // an optional object containing custom headers to be sent with each request
-        concurrencyLimit: 10, // an optional limit on pending requests
-      })
-    ),
+    spanProcessors: [
+      new BatchSpanProcessor(
+        new OTLPTraceExporter({
+          // url: '<opentelemetry-collector-url>', // default is http://localhost:4318/v1/traces
+          headers: {}, // an optional object containing custom headers to be sent with each request
+          concurrencyLimit: 10, // an optional limit on pending requests
+        })
+      ),
+    ],
     contextManager: new AsyncLocalStorageContextManager(),
     textMapPropagator: new CompositePropagator({
       // Define the types of trace headers we can receive and forward along
