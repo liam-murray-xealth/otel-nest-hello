@@ -1,6 +1,5 @@
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
-import { IncomingMessage, ClientRequest } from 'http'
-import { Span } from '@opentelemetry/api'
+import { IncomingMessage } from 'http'
 
 let ignorePaths: string[] = []
 

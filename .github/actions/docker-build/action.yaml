@@ -98,7 +98,7 @@ runs:
     #  
     - name: Docker meta
       id: meta
-      uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175 # v4.6.0
+      uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5
       with:
         context: ${{ inputs.context }}
         images: |
@@ -123,13 +123,13 @@ runs:
         echo -e "labels:\n${{ steps.meta.outputs.labels }}"
 
     - name: Set up QEMU for docker build push action
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3
 
     - name: Log in to ghcr.io
-      uses: docker/login-action@v2
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
       with:
         registry: ${{ inputs.github-repo }}
         username: ${{ github.actor }}
@@ -137,7 +137,7 @@ runs:
 
     - name: Build and push
       id: build_push
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
       with:
         # docker image build . --file docker/Dockerfile
         context: .

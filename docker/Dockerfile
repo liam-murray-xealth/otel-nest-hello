@@ -1,5 +1,5 @@
 
-FROM node:18-bullseye-slim
+FROM node:24-bullseye-slim
 
 ARG GITHUB_SHA_SHORT
 ENV GITHUB_SHA_SHORT=${GITHUB_SHA_SHORT}

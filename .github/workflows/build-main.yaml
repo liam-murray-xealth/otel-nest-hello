@@ -30,7 +30,7 @@ jobs:
       #  a) update the pending release PR; or
       #  b) (if this commit is from merging the pending release PR) create a release tag and release
       #
-      - uses: google-github-actions/release-please-action@a6d1fd9854c8c40688a72f7e4b072a1e965860a0 # v4.0.0
+      - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4
         id: release
         with:
           target-branch: main
@@ -47,18 +47,18 @@ jobs:
       #
       - name: Checkout code from tag
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: ${{ steps.release.outputs.tag_name }}
 
       - name: Checkout code from workflow
         if: ${{ ! steps.release.outputs.release_created }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
         with:
-          node-version: 18
+          node-version: 24
 
       - name: Install dependencies with audit
         run: |

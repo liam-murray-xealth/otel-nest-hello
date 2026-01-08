@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnprocessableEntityException, Logger } from '@nestjs/common'
 import { PostModel } from './posts.interface'
-import { HttpModule, HttpService } from '@nestjs/axios'
+import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 
 export type CatFact = {
@@ -52,7 +52,8 @@ export class PostsService {
     }
 
     // find the next id for a new blog post
-    const maxId: number = Math.max(...this.posts.map(post => post.id || -1))
+    const maxId: number =
+      this.posts.length > 0 ? Math.max(...this.posts.map(post => post.id || 0)) : -1
     const id: number = maxId + 1
 
     const blogPost: PostModel = {
