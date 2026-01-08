@@ -55,8 +55,10 @@ jobs:
 
       - name: Parse Meta
         id: parse-meta
+        env:
+          DOCKER_METADATA: ${{ steps.docker.outputs.docker-metadata }}
         run: |
-          IMAGE_LIST=$(jq -r '.["image.name"]' <<< '${{ steps.docker.outputs.docker-metadata }}' | tr ',' '\n')
+          IMAGE_LIST=$(echo "$DOCKER_METADATA" | jq -r '.["image.name"]' | tr ',' '\n')
           #echo "images='\"$IMAGE_LIST\"'" >> "$GITHUB_OUTPUT"
           {
             echo 'images<<EOF'
