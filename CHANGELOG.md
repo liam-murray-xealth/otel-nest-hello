@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.15](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.14...v1.0.15) (2026-01-08)
+
+
+### Bug Fixes
+
+* ci parse meta ([#50](https://github.com/liam-murray-xealth/otel-nest-hello/issues/50)) ([086e1ae](https://github.com/liam-murray-xealth/otel-nest-hello/commit/086e1aee02e556a0e012f95e62730aa30772c195))
+
+
+### Miscellaneous
+
+* improve action sha retrieval logic with sorting ([#51](https://github.com/liam-murray-xealth/otel-nest-hello/issues/51)) ([1439bf9](https://github.com/liam-murray-xealth/otel-nest-hello/commit/1439bf96d2e0c7bdc4310510ba1be6f30e45170b))
+* update everything to latest ([#46](https://github.com/liam-murray-xealth/otel-nest-hello/issues/46)) ([6887f30](https://github.com/liam-murray-xealth/otel-nest-hello/commit/6887f30c9057d92b67b22851f4b249d5c72ff10c))
+
 ## [1.0.14](https://github.com/liam-murray-xealth/otel-nest-hello/compare/v1.0.13...v1.0.14) (2023-12-06)
 
 
